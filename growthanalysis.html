@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f8fa"><title>Growth Scorecard · Google Sheets Viewer</title><style>
+:root{font-family:Arial,system-ui,sans-serif;color:#17212e;background:#f7f8fa;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-height:100vh}.shell{width:min(1180px,100% - 32px);margin:auto;padding:28px 0 36px}.head,.panel,.result{background:#fff;border:1px solid #e4e8ed;border-radius:14px;box-shadow:0 4px 20px #17212e0a}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:20px 22px}.eyebrow{margin:0 0 6px;color:#68768a;font-size:11px;font-weight:bold;letter-spacing:.12em}.head h1{margin:0;font-size:clamp(23px,4vw,32px)}.head p{margin:7px 0 0;color:#697586;font-size:13px}.badge{white-space:nowrap;background:#eaf1ff;color:#3159aa;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:bold}.panel{margin-top:14px;padding:17px 20px}.loader{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.loader label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:bold;min-width:min(360px,100%)}select,input[type=search]{min-height:40px;border:1px solid #d8dee7;border-radius:8px;background:#fff;padding:8px 11px;font:14px Arial,sans-serif;color:#17212e}.loader select{min-width:280px}.helptext,.status,.foot{font-size:12px;color:#778295;line-height:1.5}.helptext{margin:11px 0 0}.status{margin:9px 0 0}.result{margin-top:14px;padding:20px}.saved-title{font-size:16px;margin:3px 0 10px}.list-scroll,.table-scroll{overflow:auto}.saved-table,.score-table,.quarter-table{border-collapse:collapse;width:100%}.saved-table{min-width:980px}.saved-table th,.score-table th{background:#f3f4f2;color:#758093;text-transform:uppercase;letter-spacing:.07em;font-size:10px;text-align:left}.saved-table th,.saved-table td{padding:10px;border-bottom:1px solid #e9ebef}.saved-table td{font-size:13px}.stock-link{border:0;background:none;color:#1f5fd1;text-decoration:underline;font:600 13px Arial;cursor:pointer}.company-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:7px 0 14px;border-bottom:1px solid #e8ebef}.company-head h2{margin:0;font-size:20px}.company-head p{margin:5px 0 0;color:#697586;font-size:12px}.symbol{font:600 12px monospace;color:#49627d}.summary{display:flex;align-items:center;gap:17px;padding:17px 0}.gauge{width:82px;height:82px;border:3px solid #0ea765;border-radius:50%;display:grid;place-content:center;text-align:center;flex:none;color:#079558}.gauge.mid{border-color:#d38a16;color:#a76100}.gauge.low{border-color:#dc4d4d;color:#c12e37}.gauge strong{font-size:27px;line-height:1}.gauge small{font-size:10px;color:#718096}.grade{font-size:19px;font-weight:bold}.score-meta{font-size:12px;color:#778295;margin-top:5px}.score-table{min-width:700px}.score-table th,.score-table td{padding:10px;border-bottom:1px solid #e9ebef;vertical-align:top}.score-table th:last-child,.score-table td:last-child,.score-table th:nth-last-child(2),.score-table td:nth-last-child(2){text-align:right;white-space:nowrap}.group td{background:#fbfbfa;color:#758093;font-weight:bold;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.mark{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-weight:bold}.full{background:#dcf5e8;color:#079558}.part{background:#fff0d8;color:#c77800}.zero{background:#fde3e4;color:#c63843}.na{background:#eceff3;color:#778295}.metric{font-weight:600;font-size:13px}.note{font-size:11px;color:#788496;line-height:1.45;margin-top:3px}.value,.points{font:12px monospace;white-space:nowrap}.group td{padding:9px 10px}.rule-help{position:relative;display:inline-grid;place-items:center;width:15px;height:15px;margin-left:4px;border:1px solid #8792a1;border-radius:50%;color:#647184;font-size:10px;vertical-align:1px;cursor:help}.tip{display:none;position:fixed;z-index:50;max-width:min(480px,calc(100vw - 30px));padding:9px 11px;border:1px solid #333;background:#fff;color:#17212e;box-shadow:0 2px 6px #17212e24;font-size:13px;font-weight:normal;line-height:1.45}.rule-help:hover .tip,.rule-help:focus .tip{display:block}.subhead{margin:24px 0 10px;font-size:19px}.subhead small{display:block;margin-top:4px;color:#697586;font-size:12px;font-weight:normal}.quarter-scroll{overflow:auto;border:1px solid #e5e8ed;border-radius:9px}.quarter-table{min-width:max-content;font-size:12px}.quarter-table th,.quarter-table td{padding:8px 10px;border-bottom:1px solid #e8e8e4;text-align:right;white-space:nowrap}.quarter-table thead th{background:#f3f4f2;color:#748094;font-size:10px;text-transform:uppercase;letter-spacing:.04em}.quarter-table thead th:first-child,.quarter-table tbody th{text-align:left;position:sticky;left:0;background:#fff;z-index:1}.quarter-table thead th:first-child{background:#f3f4f2}.quarter-table tbody th{font-weight:600}.quarter-table td{font:12px monospace}.num-positive{color:#07864c}.num-negative{color:#c63843}.num-neutral{color:#748094}.val-dark-blue{color:#002d62!important;font-weight:700!important}.canslim-grade{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}.canslim-very-strong{background:#d6f5e4;color:#087443}.canslim-strong{background:#e4f4db;color:#397a16}.canslim-good{background:#e7f0ff;color:#3159aa}.canslim-average{background:#fff1d6;color:#946000}.canslim-below{background:#ffeadf;color:#a34a16}.canslim-poor{background:#fde3e4;color:#c63843}.canslim-status-unavailable{background:#eceff3;color:#778295}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:10px 0}.card{background:#f8f8f6;border:1px solid #e1e3e2;border-radius:10px;padding:12px}.card span,.card small{display:block;color:#748094;font-size:11px}.card span{text-transform:uppercase;font-weight:bold}.card strong{display:block;margin:6px 0 3px;color:#07864c;font:600 18px monospace}.chart-scroll{overflow:hidden;border:1px solid #e5e8ed;border-radius:9px}.chart{display:block;width:100%;height:auto;max-width:none}.chart-axis{stroke:#9aa5b3;stroke-width:1}.chart-grid{stroke:#e8ebef}.chart-line{fill:none;stroke:#4275df;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}.chart-price-line{fill:none;stroke:#df8a16;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:6 3}.chart-price-label{fill:#bd7007;font:600 11px monospace}.chart-price-point{fill:#df8a16;stroke:#fff;stroke-width:1.5}.legend-line{display:inline-block;width:18px;height:0;border-top:3px solid #4275df}.legend-line.price{border-color:#df8a16;border-top-style:dashed}.chart-point{fill:#4275df;stroke:white;stroke-width:2}.chart-latest{fill:#07864c}.chart-star{fill:#d38a16;font-size:22px}.chart-star-secondary{fill:#7772c7}.chart-current-ring{fill:none;stroke:#07864c;stroke-width:2}.legend{display:flex;flex-wrap:wrap;gap:16px;margin:11px 0;color:#657184;font-size:11px}.legend span{display:flex;align-items:center;gap:6px}.legend-star{font-style:normal;font-size:17px;line-height:1}.legend-star.peak{color:#da8b13}.legend-star.secondary{color:#7772c7}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.legend-dot.current{background:#07864c}.chart-label{fill:#657184;font:11px monospace}.flags{display:flex;flex-wrap:wrap;gap:8px}.flag{border:1px solid #f2d4a8;background:#fff8eb;color:#855200;border-radius:999px;padding:7px 10px;font-size:11px}.empty{padding:24px;text-align:center;color:#697586}.foot{text-align:center;margin-top:14px}.hidden{display:none!important}@media(max-width:650px){.shell{width:calc(100% - 20px);padding-top:12px}.head{padding:16px}.panel,.result{padding:14px}.head{align-items:flex-start;flex-direction:column}.badge{align-self:flex-start}.loader label{width:100%}.loader select{min-width:0;width:100%}.cards{grid-template-columns:1fr}.company-head h2{font-size:17px}.summary{gap:12px}.gauge{width:72px;height:72px}.gauge strong{font-size:24px}}
+.canslim-panel{margin:12px 0 18px;padding:13px 15px;border:1px solid #e5e8ed;border-radius:10px;background:#fff}.canslim-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.canslim-heading h3{margin:0;font-size:14px}.canslim-heading>span,.canslim-item small{color:#748094;font-size:11px}.canslim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.canslim-item{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0;padding:11px 12px;border:1px solid #e5e8ed;border-radius:8px;background:#fafbfc}.canslim-item b,.canslim-item small{display:block}.canslim-item b{font-size:12px}.canslim-item strong{display:block;margin:4px 0;font:600 18px monospace}.canslim-years{margin-top:3px}.canslim-status{flex:none;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:bold}.canslim-meets{background:#dcf5e8;color:#07864c}.canslim-below{background:#fff0d8;color:#9a6100}.canslim-unavailable{background:#eceff3;color:#778295}@media(max-width:650px){.canslim-grid{grid-template-columns:1fr}.canslim-item{align-items:flex-start;flex-direction:column}}.metric-filter{margin-top:10px}.metric-filter h3{font-size:14px;margin:0}.metric-filter-grid{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr)) auto;gap:10px;align-items:end;margin-top:10px}.metric-filter-grid label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:bold}.metric-filter-input,.metric-filter-grid input{min-height:40px;border:1px solid #d8dee7;border-radius:8px;padding:8px 10px;font:14px Arial,sans-serif;color:#17212e}.metric-filter-actions{display:flex;gap:8px}.metric-filter-actions button{min-height:40px;padding:8px 12px;border:1px solid #d8dee7;border-radius:8px;background:#f7f8fa;color:#17212e;font-weight:600;cursor:pointer}.metric-filter-actions button:first-child{background:#07864c;border-color:#07864c;color:white}.metric-filter .status{margin-bottom:0}.saved-table tr[hidden]{display:none!important}@media(max-width:850px){.metric-filter-grid{grid-template-columns:repeat(2,minmax(130px,1fr))}.metric-filter-actions{grid-column:1/-1}}@media(max-width:500px){.metric-filter-grid{grid-template-columns:1fr}}.sector-filter{margin:12px 0 4px}.sector-filter-heading{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px}.sector-filter-heading>span{color:#778295;font-weight:normal}.sector-filter-heading>div{display:flex;gap:6px;margin-left:auto}.sector-filter-heading button{border:1px solid #d8dee7;border-radius:6px;background:#fff;padding:5px 8px;color:#3159aa;font-size:11px;cursor:pointer}.sector-filter-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.sector-chip{display:flex;align-items:center;gap:6px;border:1px solid #e1e6ed;border-radius:999px;background:#f8fafc;padding:6px 10px;font-size:12px;font-weight:normal;cursor:pointer}.sector-chip input{accent-color:#07864c}.metric-filter-grid label{min-width:0}.row-sector{display:block;margin-top:3px;color:#778295;font-size:10px;font-weight:normal}
+
+/* Navigation Section Tabs */
+.nav-tabs{display:flex;gap:8px;border-bottom:2px solid #e5e8ed;margin-bottom:14px;padding-bottom:2px}
+.nav-tab{padding:8px 16px;border:0;background:none;font:700 13px Arial,sans-serif;color:#64748b;cursor:pointer;border-radius:6px 6px 0 0;position:relative}
+.nav-tab:hover{color:#0f172a;background:#f1f5f9}
+.nav-tab.active{color:#07864c;background:none}
+.nav-tab.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:3px;background:#07864c;border-radius:2px}
+.tab-content{display:block}
+.tab-content.hidden{display:none!important}
+
+/* Watchlist UI */
+.watchlist-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0}
+.watchlist-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.watchlist-btn{min-height:38px;padding:0 14px;border:0;border-radius:8px;background:#07864c;color:white;font:700 12px Arial,sans-serif;cursor:pointer}
+.watchlist-btn:hover{background:#067341}
+.watchlist-btn:disabled{opacity:.5;cursor:wait}
+.watchlist-save-btn{min-height:38px;padding:0 14px;border:1px solid #07864c;border-radius:8px;background:#fff;color:#07864c;font:700 12px Arial,sans-serif;cursor:pointer}
+.watchlist-save-btn:hover{background:#f0fdf4}
+.delete-icon{border:0;background:none;color:#dc2626;cursor:pointer;font-size:15px;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center}
+.delete-icon:hover{background:#fee2e2}
+</style></head>
+<body><main class="shell"><header class="head"><div><p class="eyebrow">GOOGLE SHEETS VIEWER</p><h1>Growth Scorecard</h1><p>Saved scorecards and quarterly results from your GrowthAnalysis Google Sheet.</p></div><span class="badge">Live · Internet required</span></header>
+<section class="panel">
+  <!-- 3 Section Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button type="button" class="nav-tab active" data-tab="tab-watchlist">Watchlist</button>
+    <button type="button" class="nav-tab" data-tab="tab-sector">Search by sector</button>
+    <button type="button" class="nav-tab" data-tab="tab-eps">Search by EPS Growth</button>
+  </nav>
+
+  <!-- Section 1: Watchlist (Default Active) -->
+  <div id="tab-watchlist" class="tab-content">
+    <div class="watchlist-bar">
+      <div class="watchlist-left">
+        <select id="watchlist-select" style="min-width: 260px;">
+          <option value="">Select a stock to add…</option>
+        </select>
+        <button id="add-to-watchlist" class="watchlist-btn" type="button">+ Add stock</button>
+        <button id="save-watchlist-cloud" class="watchlist-save-btn" type="button">💾 Save Watchlist to Google Sheet</button>
+      </div>
+      <span id="watchlist-count" class="status" style="margin:0;"></span>
+    </div>
+  </div>
+
+  <!-- Section 2: Search by sector -->
+  <div id="tab-sector" class="tab-content hidden">
+    <div class="loader">
+      <label>Sector<select id="sector-select" disabled><option>Loading sectors…</option></select></label>
+      <label id="stock-label">Stocks<select id="stock-select" disabled><option>Loading stocks…</option></select></label>
+    </div>
+  </div>
+
+  <!-- Section 3: Search by EPS Growth -->
+  <div id="tab-eps" class="tab-content hidden">
+    <div class="metric-filter">
+      <div class="sector-filter">
+        <div class="sector-filter-heading">
+          <b>Include sectors</b><span>Any checked sector qualifies (OR)</span>
+          <div><button id="select-all-sectors" type="button">Select all</button><button id="clear-all-sectors" type="button">Clear all</button></div>
+        </div>
+        <div id="sector-filter-list" class="sector-filter-list" aria-label="Sectors to include"></div>
+      </div>
+      <p class="helptext">A stock must meet every entered EPS minimum (AND) and belong to any checked sector (OR). Leave EPS fields blank to ignore them.</p>
+      <div class="metric-filter-grid">
+        <label>Average annual EPS YoY (%)<input class="eps-filter-input" id="eps-filter-annual" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 20.5" pattern="-?\d*(\.\d*)?" title="Enter a number, optionally with a decimal and minus sign"></label>
+        <label>Quarterly EPS YoY (%)<input class="eps-filter-input" id="eps-filter-current" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 25" pattern="-?\d*(\.\d*)?" title="Enter a number, optionally with a decimal and minus sign"></label>
+        <label>EPS QoQ (%)<input class="eps-filter-input" id="eps-filter-qoq" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 5.0" pattern="-?\d*(\.\d*)?" title="Enter a number, optionally with a decimal and minus sign"></label>
+        <div class="metric-filter-actions">
+          <button id="apply-eps-filter" type="button">Search stocks</button>
+          <button id="clear-eps-filter" type="button">Clear</button>
+        </div>
+      </div>
+      <p id="eps-filter-status" class="status" role="status" aria-live="polite">Enter one or more minimum values, then search.</p>
+    </div>
+  </div>
+
+  <p id="status" class="status" role="status" style="margin-top:12px;">Connecting to Google Sheets…</p>
+</section>
+
+<section id="saved-panel" class="panel hidden"><h2 id="saved-title" class="saved-title">Stocks</h2><div class="list-scroll"><table class="saved-table"><thead><tr><th>Company</th><th>Ticker</th><th>Score</th><th>Average annual EPS YoY</th><th>Quarterly EPS YoY</th><th>EPS QoQ</th><th>CANSLIM Status</th><th id="th-action" style="text-align:right;">Action</th></tr></thead><tbody id="saved-list"></tbody></table></div></section><section id="detail" class="result hidden"></section><footer class="foot">Read-only Google Sheet data · Refreshed from Apps Script · Internet connection required</footer></main><script src="./config.js"></script><script>
+'use strict';
+const GOOGLE_APPS_SCRIPT_WEB_APP_URL = String(window.GROWTH_APPS_SCRIPT_WEB_APP_URL||'').trim();
+const sectorSelect=document.querySelector('#sector-select'),stockSelect=document.querySelector('#stock-select'),stockLabel=document.querySelector('#stock-label'),statusEl=document.querySelector('#status'),savedPanel=document.querySelector('#saved-panel'),savedTitle=document.querySelector('#saved-title'),savedList=document.querySelector('#saved-list'),detail=document.querySelector('#detail');
+const watchlistSelect=document.querySelector('#watchlist-select'),addToWatchlistBtn=document.querySelector('#add-to-watchlist'),saveWatchlistCloudBtn=document.querySelector('#save-watchlist-cloud'),watchlistCountEl=document.querySelector('#watchlist-count');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=(v,d=0)=>v==null?'—':`₹${Number(v).toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d})}`;
+const pct=(v,d=1)=>v==null?'—':`${Number(v)>0?'+':''}${Number(v).toFixed(d)}%`;
+const tone=v=>v==null?'num-neutral':v>0?'num-positive':v<0?'num-negative':'num-neutral';
+const dateKey=s=>{const m=String(s??'').match(/^([A-Za-z]{3})\s+(\d{4})/);const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};return m?Date.UTC(+m[2],months[m[1].toLowerCase()]??0,1):0};
+
+const rules={
+ 'Recent earnings growth':'Scored on latest-quarter EPS YoY growth (net-profit YoY proxy if EPS is unavailable): ≥20% = 20/20; ≥15% = 15/20; ≥10% = 10/20; <10% = 0/20.',
+ 'Recent sales trend':'Latest three quarterly sales YoY rates: 15/15 if all three are positive and the latest is at least as high as the prior rate; 7.5/15 if at least two are positive; otherwise 0/15.',
+ 'EPS sequential acceleration':'Compare the latest two QoQ EPS growth rates (net-profit proxy if EPS is unavailable): 5/5 if both are positive and latest > previous; 2.5/5 if both are positive but latest ≤ previous; otherwise 0/5.',
+ 'Sales sequential acceleration':'Compare the latest two QoQ sales growth rates: 5/5 if both are positive and latest > previous; 2.5/5 if both are positive but latest ≤ previous; otherwise 0/5.',
+ 'Current growth vs. 3Y trend':'Compare the three-quarter average YoY growth with the annual 3Y CAGR: 10/10 if at least 5 percentage points higher; 5/10 if equal or higher by less than 5 points; 0/10 if lower.',
+ 'Breakout year':'10/10 if latest annual EPS is a new high versus the previous three fiscal years AND annual EPS growth accelerated; 5/10 if only one condition is met; 0/10 if neither is met.',
+ 'Strong annual earnings':'Latest annual EPS growth: ≥20% = 5/5; >0% and <20% = 2.5/5; ≤0% = 0/5.',
+ 'Profit-margin direction':'Change in operating margin versus the same quarter last year: ≥+1 percentage point = 10/10; ≥−0.5 and <+1 point = 5/10; <−0.5 point = 0/10.',
+ 'Return quality':'ROE for financials or ROCE for other sectors: ≥20% = 10/10; ≥15% = 7.5/10; ≥10% = 5/10; ≥8% = 2.5/10; <8% = 0/10.',
+ 'Return consistency':'Across the latest three annual ROE/ROCE readings: all three ≥15% = 5/5; two ≥15% = 2.5/5; fewer than two = 0/5.',
+ 'Balance-sheet strength':'Debt-to-equity (financial companies excluded): ≤0.30× = 5/5; >0.30× and ≤1.00× = 2.5/5; >1.00× = 0/5.'
+};
+
+function n(v){if(v==null||v==='')return null;const x=Number(v);return Number.isFinite(x)?x:null}
+function tooltip(rule){return rule?`<span class="rule-help" tabindex="0" aria-label="Scoring condition: ${esc(rule)}">?<span class="tip" role="tooltip">${esc(rule)}</span></span>`:''}
+function criteriaHtml(r){const mark=!r.available?'na':Number(r.points)>=Number(r.max)?'full':Number(r.points)>0?'part':'zero',sym=!r.available?'–':Number(r.points)>=Number(r.max)?'✓':Number(r.points)>0?'½':'×';return `<tr><td><span class="mark ${mark}">${sym}</span></td><td><div class="metric">${esc(r.label)} ${tooltip(r.rule)}</div><div class="note">${esc(r.note)}</div></td><td class="value">${esc(r.value??'—')}</td><td class="points">${r.available?Number(r.points).toFixed(1):'–'}/${esc(r.max)}</td></tr>`}
+function renderEpsPriceChart(q){
+  const monthIndex={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11},pkey=v=>{const m=String(v||'').match(/^([A-Za-z]{3})\s+(\d{4})/);return m?Date.UTC(Number(m[2]),monthIndex[m[1].toLowerCase()]??0,1):0},moneyFmt=(v,d=0)=>typeof money==='function'?money(v,d):amount(v,d);
+  const pts=(q?.quarters||[]).filter(x=>x.eps!=null).slice().sort((a,b)=>pkey(a.period)-pkey(b.period));
+  if(!pts.length)return '<p class="note">Quarterly EPS history is unavailable in this workbook record.</p>';
+  const ranked=pts.slice().sort((a,b)=>Number(b.eps)-Number(a.eps)),peak=q.peak||ranked[0],secondary=q.secondaryPeak||ranked.find(x=>x.period!==peak?.period),latest=q.latest||pts.at(-1),prices=pts.filter(x=>x.price!=null).map(x=>Number(x.price));
+  const availableWidth=Math.max(320,Math.min(window.innerWidth-80,1140)),W=Math.floor(availableWidth*.93),H=350,L=68,R=72,T=32,B=55,plotH=H-T-B;
+  let low=Math.min(0,...pts.map(x=>Number(x.eps))),high=Math.max(...pts.map(x=>Number(x.eps)));if(low===high){low-=1;high+=1}const pad=(high-low)*.08;low-=pad;high+=pad;
+  let pLow=prices.length?Math.min(...prices):0,pHigh=prices.length?Math.max(...prices):1;if(pLow===pHigh){pLow-=1;pHigh+=1}const pPad=(pHigh-pLow)*.08;pLow=Math.max(0,pLow-pPad);pHigh+=pPad;
+  const x=i=>pts.length<2?L+(W-L-R)/2:L+i*(W-L-R)/(pts.length-1),y=v=>T+(high-Number(v))*plotH/(high-low),yp=v=>T+(pHigh-Number(v))*plotH/(pHigh-pLow);
+  const grid=Array.from({length:4},(_,i)=>{const f=i/3,v=high-(high-low)*f,pv=pHigh-(pHigh-pLow)*f,yy=T+plotH*f;return `<line class="chart-grid" x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}"/><text class="chart-label" x="${L-8}" y="${yy+4}" text-anchor="end">${v.toFixed(1)}</text>${prices.length?`<text class="chart-label" x="${W-R+8}" y="${yy+4}" text-anchor="start">${pv.toFixed(0)}</text>`:''}`}).join('');
+  const epsLine=pts.map((p,i)=>`${x(i)},${y(p.eps)}`).join(' '),pricePts=pts.map((p,i)=>({p,i})).filter(v=>v.p.price!=null),priceLine=pricePts.map(v=>`${x(v.i)},${yp(v.p.price)}`).join(' '),step=Math.max(1,Math.ceil(pts.length/Math.max(4,Math.floor(W/80))));
+  const dots=pts.map((p,i)=>{const isPeak=p.period===peak?.period,isSecondary=p.period===secondary?.period,isCurrent=p.period===(latest?.period||pts.at(-1)?.period),star=isPeak||isSecondary,label=i===0||i===pts.length-1||i%step===0||star;const mark=star?`<text class="chart-star ${isPeak?'':'chart-star-secondary'}" x="${x(i)}" y="${y(p.eps)}" text-anchor="middle" dominant-baseline="central">★</text>`:`<circle class="chart-point ${isCurrent?'chart-latest':''}" cx="${x(i)}" cy="${y(p.eps)}" r="${isCurrent?6:4}"/>`;return `<g>${mark}${isCurrent&&star?`<circle class="chart-current-ring" cx="${x(i)}" cy="${y(p.eps)}" r="12"/>`:''}<title>${esc(p.period)} EPS: ${moneyFmt(p.eps,2)}${p.price==null?'':` · Price: ${moneyFmt(p.price,2)}${p.priceDate?` on ${esc(p.priceDate)}`:''}`}</title>${isPeak||isSecondary||isCurrent?`<text class="chart-label" x="${x(i)}" y="${y(p.eps)-14}" text-anchor="middle">${moneyFmt(p.eps,2)}</text>`:''}${label?`<text class="chart-label" x="${x(i)}" y="${H-16}" text-anchor="middle">${esc(p.period)}</text>`:''}</g>`}).join('');
+  const priceDots=pricePts.map(({p,i})=>`<circle class="chart-price-point" cx="${x(i)}" cy="${yp(p.price)}" r="${i===pricePts.at(-1).i?5:3.5}"><title>${esc(p.period)} share price: ${moneyFmt(p.price,2)}${p.priceDate?` (${esc(p.priceDate)})`:''}</title></circle>${i===pricePts.at(-1).i?`<text class="chart-price-label" x="${x(i)}" y="${yp(p.price)-10}" text-anchor="middle">${moneyFmt(p.price,2)}</text>`:''}`).join('');
+  return `<div class="chart-scroll eps-chart-scroll"><svg class="chart eps-chart" style="width:${W}px;max-width:none" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Quarterly EPS and quarter-end share price from oldest to latest">${grid}<line class="chart-axis" x1="${L}" y1="${T}" x2="${L}" y2="${H-B}"/><line class="chart-axis" x1="${W-R}" y1="${T}" x2="${W-R}" y2="${H-B}"/><line class="chart-axis" x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}"/><polyline class="chart-line" points="${epsLine}"/>${prices.length?`<polyline class="chart-price-line" points="${priceLine}"/>${priceDots}`:''}${dots}<text class="chart-label" x="${L}" y="16">EPS (₹)</text>${prices.length?`<text class="chart-label" x="${W-R}" y="16" text-anchor="end">Share price (₹)</text>`:''}</svg></div><div class="legend"><span><i class="legend-line eps"></i> Quarterly EPS</span><span><i class="legend-line price"></i> Share price (quarter end)</span><span><i class="legend-star peak">★</i> All-time EPS peak</span><span><i class="legend-star secondary">★</i> Secondary EPS peak</span></div>${prices.length?'':'<p class="note">No share prices are stored for this stock. Re-search and save it while the service is running to add prices to the workbook.</p>'}`;
+}
+function epsChart(q){return renderEpsPriceChart(q)}
+function canslimPanel(c){
+  c=c||{};
+  const valueClass=v=>v==null?'num-neutral':v>0?'num-positive':v<0?'num-negative':'num-neutral';
+  const status=v=>v==null?'Unavailable':Number(v)>=25?'At or above 25% guideline':'Below 25% guideline';
+  const statusClass=v=>v==null?'canslim-unavailable':Number(v)>=25?'canslim-meets':'canslim-below';
+  const annual=(c.annualEpsGrowth||[]).slice(0,3).reverse();
+  const annualDetail=annual.length?annual.map(x=>`${esc(x.period)} ${pct(x.growth,1)}`).join(' · '):'Annual EPS history was not saved; re-search with the service to capture this value';
+  return `<section class="canslim-panel"><div class="canslim-heading"><h3>CAN SLIM · C &amp; A</h3><span>Highlights only · no points</span></div><div class="canslim-grid"><article class="canslim-item"><div><b>C · Current earnings</b><strong class="${valueClass(c.currentEpsYoy)}">${pct(c.currentEpsYoy,1)}</strong><small>Quarterly EPS YoY${c.currentQuarter?` · ${esc(c.currentQuarter)}`:''}</small></div><span class="canslim-status ${statusClass(c.currentEpsYoy)}">${status(c.currentEpsYoy)}</span></article><article class="canslim-item"><div><b>A · Annual earnings</b><strong class="${valueClass(c.annualEpsGrowthAverage)}">${pct(c.annualEpsGrowthAverage,1)}</strong><small>Average annual EPS YoY growth · last 3 comparisons</small><small class="canslim-years">${annualDetail}</small></div><span class="canslim-status ${statusClass(c.annualEpsGrowthAverage)}">${status(c.annualEpsGrowthAverage)}</span></article></div></section>`;
+}
+function canslimData(record,analysis,latest){const c={...(analysis?.canslim||{}),...(record?.canslim||{})};if(c.currentEpsYoy==null&&latest?.epsYoy!=null){c.currentEpsYoy=latest.epsYoy;c.currentQuarter=c.currentQuarter||latest.period}return c}
+
+function renderRecord(r){
+  const q=r.quarterlyAnalysis||{},all=(q.quarters||[]).slice().sort((a,b)=>dateKey(a.period)-dateKey(b.period)),rows=r.rows||[],score=Number(r.score)||0,gradeClass=score>=80?'':'mid';
+  const latest=all.at(-1),ranked=all.filter(x=>x.eps!=null).slice().sort((a,b)=>b.eps-a.eps),maxE=ranked[0],second=ranked.find(x=>x.period!==maxE?.period);
+  const metrics=[
+    ['Sales / Revenue','sales',v=>money(v)],
+    ['Sales YoY Growth','salesYoy',pct],
+    ['Sales QoQ Growth','salesQoq',pct],
+    ['Operating Profit','operatingProfit',v=>money(v)],
+    ['Operating Profit YoY','operatingProfitYoy',pct],
+    ['Operating Profit QoQ','operatingProfitQoq',pct],
+    ['Operating Margin','operatingMargin',pct],
+    ['Other Income','otherIncome',v=>money(v)],
+    ['Net Profit','netProfit',v=>money(v)],
+    ['Net Profit YoY','profitYoy',pct],
+    ['Net Profit QoQ','profitQoq',pct],
+    ['Net Margin','netMargin',pct],
+    ['Net Margin YoY change','netMarginYoyDiff',v=>v==null?'—':`${v>0?'+':''}${Number(v).toFixed(2)} pp`],
+    ['EPS','eps',v=>money(v,2)],
+    ['EPS YoY','epsYoy',pct],
+    ['EPS QoQ','epsQoq',pct],
+    ['EPS vs peak','epsVsPeak',pct],
+    ['Share price (quarter end)','price',v=>money(v,2)]
+  ];
+
+  const cellTone = (key, val) => {
+    if (key === 'operatingProfitQoq' && val != null && Number(val) >= 15) {
+      return 'class="val-dark-blue"';
+    }
+    return `class="${tone(val)}"`;
+  };
+
+  const qtable=all.length?`<div class="quarter-scroll"><table class="quarter-table"><thead><tr><th>Quarterly results</th>${all.map(x=>`<th>${esc(x.period)}</th>`).join('')}</tr></thead><tbody>${metrics.map(([label,key,fmt])=>`<tr><th>${esc(label)}</th>${all.map(x=>`<td ${cellTone(key, x[key])}>${fmt(x[key])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="note">No quarterly result rows were saved for this company.</p>';
+  const status=q.breakout||'EPS breakout status was not included in this workbook record.';
+  const flags=r.flags||[];
+
+  const cardVal = (val, isOpQoq = false) => {
+    const isBlue = isOpQoq && val != null && Number(val) >= 15;
+    const cls = isBlue ? 'val-dark-blue' : tone(val);
+    return `<strong class="${cls}">${pct(val, 1)}</strong>`;
+  };
+
+  const summaryRow1 = `
+    <div class="cards" style="grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 8px;">
+      <article class="card"><span>Sales YoY</span>${cardVal(latest?.salesYoy)}</article>
+      <article class="card"><span>Operating Profit YoY</span>${cardVal(latest?.operatingProfitYoy)}</article>
+      <article class="card"><span>Net Profit YoY</span>${cardVal(latest?.profitYoy)}</article>
+      <article class="card"><span>EPS YoY</span>${cardVal(latest?.epsYoy)}</article>
+    </div>
+  `;
+
+  const summaryRow2 = `
+    <div class="cards" style="grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 14px;">
+      <article class="card"><span>Sales QoQ</span>${cardVal(latest?.salesQoq)}</article>
+      <article class="card"><span>Operating Profit QoQ</span>${cardVal(latest?.operatingProfitQoq, true)}</article>
+      <article class="card"><span>Net Profit QoQ</span>${cardVal(latest?.profitQoq)}</article>
+      <article class="card"><span>EPS QoQ</span>${cardVal(latest?.epsQoq)}</article>
+    </div>
+  `;
+
+  detail.innerHTML=`<div class="company-head"><div><h2>${esc(r.name)} <span class="symbol">${esc(r.ticker)}</span></h2><p>${esc(r.sector||'Sector unavailable')} · Saved ${esc(r.savedAt||r.asOf||'—')} · ${esc(r.source||'GrowthAnalysis workbook')}</p></div><button id="clear-detail" class="stock-link">Close</button></div><div class="summary"><div class="gauge ${gradeClass}"><strong>${score}</strong><small>/ 100</small></div><div><div class="grade">${esc(r.grade||'Score')}</div><div class="score-meta">${Number(r.earned||0).toFixed(1)}/${Number(r.available||0)} available · Growth ${Number(r.growth||0).toFixed(1)}/${Number(r.growthAvailable||0)} · Quality ${Number(r.quality||0).toFixed(1)}/${Number(r.qualityAvailable||0)}</div></div></div><div class="table-scroll"><table class="score-table"><thead><tr><th></th><th>Criterion</th><th>Value</th><th>Points</th></tr></thead><tbody><tr class="group"><td colspan="4">Growth — 70 points</td></tr>${rows.slice(0,7).map(criteriaHtml).join('')}<tr class="group"><td colspan="4">Quality — 30 points</td></tr>${rows.slice(7).map(criteriaHtml).join('')}</tbody></table></div><h2 class="subhead">Quarterly Results Analysis - ${esc(r.name || r.ticker)}<small>EPS breakout, revenue momentum &amp; operating trends · values displayed oldest to latest, left to right</small></h2>${canslimPanel(canslimData(r,q,latest))}${summaryRow1}${summaryRow2}<div class="cards"><article class="card"><span>All-time peak EPS</span><strong>${maxE?money(maxE.eps,2):'—'}</strong><small>${maxE?`Reported ${esc(maxE.period)}`:''}</small></article><article class="card"><span>Secondary peak EPS</span><strong>${second?money(second.eps,2):'—'}</strong><small>${second?`Reported ${esc(second.period)}`:''}</small></article><article class="card"><span>Latest EPS vs peak</span><strong class="${tone(latest?.epsVsPeak)}">${latest?pct(latest.epsVsPeak):'—'}</strong><small>${latest?`Latest (${esc(latest.period)}) vs all-time peak`:''}</small></article></div><p class="note">${esc(status)}</p><h3 class="subhead">All saved quarterly data - ${esc(r.name || r.ticker)}</h3>${qtable}<h3 class="subhead">Quarterly EPS vs Share Price - ${esc(r.name || r.ticker)}</h3>${epsChart(q)}${flags.length?`<h3 class="subhead">Risk flags</h3><div class="flags">${flags.map(f=>`<div class="flag"><b>${esc(f.name)}</b> ${esc(f.detail)}</div>`).join('')}</div>`:''}<p class="note">Read-only data from your GrowthAnalysis Google Sheet. Unavailable values remain blank and are excluded from the saved score.</p>`;
+  detail.classList.remove('hidden');
+  const qScroll = detail.querySelector('.quarter-scroll');
+  if (qScroll) qScroll.scrollLeft = qScroll.scrollWidth;
+  detail.querySelector('#clear-detail').onclick=()=>detail.classList.add('hidden');
+}
+
+let records=[];
+let activeTab = 'tab-watchlist';
+
+function getWatchlist(){
+  try{
+    return JSON.parse(localStorage.getItem('user_growth_watchlist') || '[]');
+  }catch(e){
+    return [];
+  }
+}
+
+function setWatchlist(list){
+  try{
+    localStorage.setItem('user_growth_watchlist', JSON.stringify(list));
+  }catch(e){}
+}
+
+function populateWatchlistSelect(){
+  watchlistSelect.innerHTML = '<option value="">Select a stock to add…</option>' +
+    records.map(r => `<option value="${esc(r.ticker)}">${esc(r.name || r.ticker)} (${esc(r.ticker)})</option>`).join('');
+}
+
+function renderWatchlist(){
+  const list = getWatchlist();
+  const watchlistRecords = records.filter(r => list.includes(r.ticker));
+  watchlistCountEl.textContent = `${watchlistRecords.length} stock${watchlistRecords.length === 1 ? '' : 's'} in Watchlist`;
+  document.querySelector('#th-action').style.display = '';
+  renderStockList(watchlistRecords, `Watchlist (${watchlistRecords.length})`, true);
+}
+
+function stockEpsMetrics(r){const q=r.quarterlyAnalysis||{},all=(q.quarters||[]).slice().sort((a,b)=>dateKey(a.period)-dateKey(b.period)),latest=all.at(-1),c={...(q.canslim||{}),...(r.canslim||{})},annualRows=c.annualEpsGrowth||[],annual=c.annualEpsGrowthAverage??(annualRows.length===3&&annualRows.every(x=>x.growth!=null)?annualRows.reduce((sum,x)=>sum+Number(x.growth),0)/3:null);return {annual,current:c.currentEpsYoy??latest?.epsYoy,qoq:latest?.epsQoq}}
+function canslimStatus(m){if(m.annual==null||m.current==null)return {label:'Insufficient data',className:'canslim-status-unavailable'};const low=Math.min(Number(m.annual),Number(m.current)),high=Math.max(Number(m.annual),Number(m.current));if(low>=25)return {label:'Very Strong',className:'canslim-very-strong'};if(high>=25&&low>=20)return {label:'Strong',className:'canslim-strong'};if(low>=20)return {label:'Good',className:'canslim-good'};if(low>=15)return {label:'Average',className:'canslim-average'};if(low>=10)return {label:'Below average',className:'canslim-below'};return {label:'Poor',className:'canslim-poor'}}
+
+function selectRecord(ticker){const r=records.find(x=>x.ticker===ticker);if(r){renderRecord(r);detail.scrollIntoView({behavior:'smooth',block:'start'})}}
+
+function renderStockRows(items, isWatchlist=false){
+  const showSector=new Set(items.map(r=>r.sector||'Other / Unclassified')).size>1;
+  return items.map(r=>{
+    const m=stockEpsMetrics(r),s=r.sector||'Other / Unclassified';
+    const actionHtml = isWatchlist
+      ? `<button class="delete-icon" data-remove="${esc(r.ticker)}" title="Remove from watchlist" aria-label="Delete">🗑️</button>`
+      : '';
+    return '<tr data-annual="'+(m.annual==null?'':m.annual)+'" data-current="'+(m.current==null?'':m.current)+'" data-qoq="'+(m.qoq==null?'':m.qoq)+'"><td><button class="stock-link" data-ticker="'+esc(r.ticker)+'">'+esc(r.name||r.ticker)+(showSector?'<small class="row-sector">'+esc(s)+'</small>':'')+'</button></td><td>'+esc(r.ticker)+'</td><td class="'+tone(Number(r.score))+'"><b>'+(r.score==null?'—':Number(r.score)+'/100')+'</b></td><td class="'+tone(m.annual)+'">'+pct(m.annual,1)+'</td><td class="'+tone(m.current)+'">'+pct(m.current,1)+'</td><td class="'+tone(m.qoq)+'">'+pct(m.qoq,1)+'</td><td><span class="canslim-grade '+canslimStatus(m).className+'">'+canslimStatus(m).label+'</span></td><td style="text-align:right;">'+actionHtml+'</td></tr>';
+  }).join('');
+}
+
+function renderStockList(items,title,isWatchlist=false){
+  savedTitle.textContent=title;
+  if(items.length===0){
+    savedList.innerHTML='<tr><td colspan="8" class="empty" style="text-align:center;padding:24px;color:#748094;">No stocks found in Watchlist. Select a stock above and click "+ Add stock".</td></tr>';
+  } else {
+    savedList.innerHTML=renderStockRows(items, isWatchlist);
+    savedList.querySelectorAll('[data-ticker]').forEach(b=>b.onclick=()=>selectRecord(b.dataset.ticker));
+    savedList.querySelectorAll('[data-remove]').forEach(b=>b.onclick=(e)=>{
+      e.stopPropagation();
+      const ticker = b.dataset.remove;
+      const list = getWatchlist().filter(t => t !== ticker);
+      setWatchlist(list);
+      const rec = records.find(r => r.ticker === ticker);
+      if(rec) rec.inWatchlist = false;
+      renderWatchlist();
+    });
+  }
+  savedPanel.classList.remove('hidden');
+}
+
+function populateSectorFilters(sectors){const box=document.querySelector('#sector-filter-list');box.innerHTML=sectors.map(s=>'<label class="sector-chip"><input type="checkbox" value="'+esc(s)+'" checked><span>'+esc(s)+'</span></label>').join('')}
+function selectedSectors(){return [...document.querySelectorAll('#sector-filter-list input:checked')].map(el=>el.value)}
+
+function applyEpsFilter(){
+  const fields=[['annual',document.querySelector('#eps-filter-annual')],['current',document.querySelector('#eps-filter-current')],['qoq',document.querySelector('#eps-filter-qoq')]];
+  if(fields.some(([,el])=>el.value.trim()!==''&&!/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(el.value.trim()))){
+    document.querySelector('#eps-filter-status').textContent='Enter a complete number in each filled field.';
+    return;
+  }
+  const thresholds=fields.filter(([,el])=>el.value.trim()!=='').map(([key,el])=>[key,Number(el.value)]),sectors=new Set(selectedSectors());
+  let items=records.filter(r=>sectors.has(r.sector||'Other / Unclassified'));
+  if(thresholds.length)items=items.filter(r=>{const m=stockEpsMetrics(r);return thresholds.every(([key,value])=>m[key]!=null&&Number.isFinite(Number(m[key]))&&Number(m[key])>=value)});
+  items.sort((a,b)=>String(a.name||a.ticker).localeCompare(String(b.name||b.ticker)));
+  detail.classList.add('hidden');
+  document.querySelector('#th-action').style.display = 'none';
+  renderStockList(items,'Matching stocks ('+items.length+')', false);
+  document.querySelector('#eps-filter-status').textContent=items.length+' matching stock'+(items.length===1?'':'s')+(thresholds.length?'. A stock meets every entered EPS minimum and belongs to a checked sector.':' in the checked sectors. Enter an EPS minimum to narrow results.');
+}
+
+function fillStocksForSector(){
+  const sector=sectorSelect.value,items=records.filter(r=>(r.sector||'Other / Unclassified')===sector).sort((a,b)=>String(a.name||a.ticker).localeCompare(String(b.name||b.ticker)));
+  stockSelect.innerHTML='<option value="">Select a stock to view details…</option>'+items.map(r=>'<option value="'+esc(r.ticker)+'">'+esc(r.name||r.ticker)+' · '+esc(r.ticker)+'</option>').join('');
+  stockSelect.value='';
+  stockSelect.disabled=!items.length;
+  document.querySelector('#th-action').style.display = 'none';
+  renderStockList(items,sector+' Stocks', false);
+  detail.classList.add('hidden');
+}
+
+function bindEpsFilter(){
+  document.querySelectorAll('.eps-filter-input').forEach(input=>input.addEventListener('input',()=>{let v=input.value.replace(/[^\d.-]/g,'');const neg=v.startsWith('-');v=v.replace(/-/g,'');const dot=v.indexOf('.');if(dot>=0)v=v.slice(0,dot+1)+v.slice(dot+1).replace(/\./g,'');input.value=(neg?'-':'')+v}));
+  document.querySelector('#apply-eps-filter').addEventListener('click',applyEpsFilter);
+  document.querySelector('#select-all-sectors').addEventListener('click',()=>document.querySelectorAll('#sector-filter-list input').forEach(input=>input.checked=true));
+  document.querySelector('#clear-all-sectors').addEventListener('click',()=>document.querySelectorAll('#sector-filter-list input').forEach(input=>input.checked=false));
+  document.querySelector('#clear-eps-filter').addEventListener('click',()=>{document.querySelectorAll('.eps-filter-input').forEach(input=>input.value='');document.querySelectorAll('#sector-filter-list input').forEach(input=>input.checked=true);applyEpsFilter();document.querySelector('#eps-filter-status').textContent='All sectors selected. EPS filters cleared; showing all stocks.'});
+}
+
+function switchTab(tabId){
+  activeTab = tabId;
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabId);
+  });
+  document.querySelectorAll('.tab-content').forEach(pane => {
+    pane.classList.toggle('hidden', pane.id !== tabId);
+  });
+  detail.classList.add('hidden');
+
+  if(tabId === 'tab-watchlist'){
+    renderWatchlist();
+  } else if(tabId === 'tab-sector'){
+    fillStocksForSector();
+  } else if(tabId === 'tab-eps'){
+    applyEpsFilter();
+  }
+}
+
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+addToWatchlistBtn.addEventListener('click', () => {
+  const ticker = watchlistSelect.value;
+  if(!ticker) return;
+  const list = getWatchlist();
+  if(!list.includes(ticker)){
+    list.push(ticker);
+    setWatchlist(list);
+    const rec = records.find(r => r.ticker === ticker);
+    if(rec) rec.inWatchlist = true;
+  }
+  watchlistSelect.value = '';
+  renderWatchlist();
+});
+
+saveWatchlistCloudBtn.addEventListener('click', async () => {
+  saveWatchlistCloudBtn.disabled = true;
+  const origText = '💾 Save Watchlist to Google Sheet';
+  saveWatchlistCloudBtn.textContent = 'Saving to Google Sheet…';
+  
+  const list = new Set(getWatchlist());
+  records.forEach(r => {
+    r.inWatchlist = list.has(r.ticker);
+  });
+
+  const payload = JSON.stringify({ records: records });
+
+  try {
+    const base = GOOGLE_APPS_SCRIPT_WEB_APP_URL.trim();
+    if (base) {
+      // mode: 'no-cors' avoids browser CORS redirect failures on Google Apps Script
+      await fetch(base, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ payload: payload })
+      });
+    }
+
+    // Also sync local Python backend if the service is running
+    try {
+      await fetch('/api/sync-google', { method: 'POST' });
+    } catch (e) {}
+
+    statusEl.textContent = `Watchlist saved to Google Sheet (${list.size} stocks) · ` + new Date().toLocaleTimeString();
+    saveWatchlistCloudBtn.textContent = '✓ Saved!';
+    setTimeout(() => {
+      saveWatchlistCloudBtn.textContent = origText;
+    }, 2000);
+  } catch (err) {
+    statusEl.textContent = 'Failed to save to Google Sheet: ' + err.message;
+    saveWatchlistCloudBtn.textContent = origText;
+  } finally {
+    saveWatchlistCloudBtn.disabled = false;
+  }
+});
+
+function displayRecords(data){
+  records=(Array.isArray(data)?data:[]).filter(r=>r&&r.ticker).map(r=>{r.rows=r.rows||[];r.quarterlyAnalysis=r.quarterlyAnalysis||{quarters:[]};for(const row of r.rows)if(!row.rule)row.rule=rules[row.label]||'';return r}).sort((a,b)=>String(a.name||a.ticker).localeCompare(String(b.name||b.ticker)));
+  if(!records.length)throw new Error('No saved stocks were found in the Google Sheet. Sync your workbook first.');
+  
+  // Read and restore cloud-saved watchlist on page load
+  const sheetWatchlist = records.filter(r => r.inWatchlist === true).map(r => r.ticker);
+  if(sheetWatchlist.length > 0) {
+    const localList = new Set([...getWatchlist(), ...sheetWatchlist]);
+    setWatchlist([...localList]);
+  }
+
+  const sectors=[...new Set(records.map(r=>r.sector||'Other / Unclassified'))].sort((a,b)=>a.localeCompare(b));
+  populateSectorFilters(sectors);
+  populateWatchlistSelect();
+  sectorSelect.innerHTML=sectors.map(s=>'<option value="'+esc(s)+'">'+esc(s)+'</option>').join('');
+  sectorSelect.disabled=false;
+  sectorSelect.value=sectors.includes('Auto')?'Auto':sectors[0];
+  stockLabel.childNodes[0].textContent=sectorSelect.value+' Stocks';
+  statusEl.textContent='Loaded '+records.length+' stocks from Google Sheets · Updated '+new Date().toLocaleString();
+  
+  switchTab('tab-watchlist');
+}
+
+function loadFromGoogleSheet(){
+  const base=GOOGLE_APPS_SCRIPT_WEB_APP_URL.trim();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec\/?$/.test(base)){statusEl.textContent='The Google Apps Script URL could not be loaded from config.txt.';return}
+  stockSelect.disabled=true;
+  statusEl.textContent='Loading saved stocks from Google Sheets…';
+  detail.classList.add('hidden');
+  const callback='growthSheetCallback_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+  const script=document.createElement('script');
+  let finished=false;
+  const cleanup=()=>{if(finished)return;finished=true;script.remove();try{delete window[callback]}catch{window[callback]=undefined}};
+  const timer=setTimeout(()=>{cleanup();statusEl.textContent='Google Sheets did not respond. Check the Apps Script URL, deployment, and access setting, then refresh.'},30000);
+  window[callback]=response=>{
+    clearTimeout(timer);cleanup();
+    if(!response||response.ok!==true){statusEl.textContent='Google Apps Script returned an error: '+(response&&response.error?response.error:'invalid response');return}
+    try{displayRecords(response.records)}catch(error){statusEl.textContent=error.message}
+  };
+  script.onerror=()=>{clearTimeout(timer);cleanup();statusEl.textContent='Could not reach the Google Apps Script web app. Check its deployment and access setting.'};
+  script.onload=()=>{setTimeout(()=>{if(finished)return;clearTimeout(timer);cleanup();statusEl.textContent='Apps Script responded, but did not return the records callback. Deploy the latest GrowthAnalysis_Sync.gs as a new web app version and set access to Anyone.'},0)};
+  script.src=base+(base.includes('?')?'&':'?')+'action=records&callback='+encodeURIComponent(callback)+'&_='+Date.now();
+  document.head.appendChild(script);
+}
+
+bindEpsFilter();
+sectorSelect.addEventListener('change',()=>{stockLabel.childNodes[0].textContent=sectorSelect.value+' Stocks';fillStocksForSector()});
+stockSelect.addEventListener('change',()=>selectRecord(stockSelect.value));
+
+document.addEventListener('pointerover',e=>{const help=e.target.closest('.rule-help');if(!help)return;const tip=help.querySelector('.tip');tip.style.display='block';const a=help.getBoundingClientRect(),b=tip.getBoundingClientRect();tip.style.left=`${Math.max(10,Math.min(a.left,innerWidth-b.width-10))}px`;tip.style.top=`${Math.max(10,a.top-b.height-8)}px`});
+document.addEventListener('pointerout',e=>{const help=e.target.closest('.rule-help');if(help&&!help.contains(e.relatedTarget))help.querySelector('.tip').style.display='none'});
+document.addEventListener('focusin',e=>{const help=e.target.closest('.rule-help');if(help){const tip=help.querySelector('.tip');tip.style.display='block';const a=help.getBoundingClientRect(),b=tip.getBoundingClientRect();tip.style.left=`${Math.max(10,Math.min(a.left,innerWidth-b.width-10))}px`;tip.style.top=`${Math.max(10,a.top-b.height-8)}px`}});
+document.addEventListener('focusout',e=>{const help=e.target.closest('.rule-help');if(help)help.querySelector('.tip').style.display='none'});
+
+window.refreshGoogleRecords=loadFromGoogleSheet;
+async function initializeGoogleSheetUrl(){
+  if(location.protocol!=='file:'){
+    try{
+      const response=await fetch(new URL('config.txt',location.href),{cache:'no-store'});
+      if(response.ok){window.GROWTH_APPS_SCRIPT_WEB_APP_URL=(await response.text()).trim()}
+    }catch(error){}
+  }
+  loadFromGoogleSheet();
+};
+initializeGoogleSheetUrl();
+</script></body></html>
