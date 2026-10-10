@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Research & Investment Hub</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#1e1b4b',
+            },
+            surface: {
+              dark: '#0f172a',
+              card: '#1e293b',
+              border: '#334155'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .card-glow:hover {
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25), 0 8px 10px -6px rgba(99, 102, 241, 0.2);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <nav class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand Logo / Title -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilter()">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
+              AlphaDeck
+            </span>
+            <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-900/60 text-indigo-300 border border-indigo-700/50">
+              Toolkit v2.4
+            </span>
+          </div>
+        </div>
+
+        <!-- Search Bar and Theme Toggle -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <div class="relative w-40 sm:w-64">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input 
+              id="search-input"
+              type="text" 
+              placeholder="Search tools, formulas..." 
+              class="w-full bg-slate-800/80 text-sm pl-9 pr-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-200 placeholder-slate-400 transition"
+              oninput="handleSearch(this.value)"
+            />
+          </div>
+
+          <!-- Light / Dark toggle -->
+          <button 
+            id="theme-toggle" 
+            onclick="toggleTheme()" 
+            class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition"
+            title="Toggle color theme"
+          >
+            <i id="theme-icon" data-lucide="sun" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <header class="relative overflow-hidden py-10 sm:py-14 border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.15),rgba(255,255,255,0))]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+        Systematic Equity Research Suite
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white mb-4">
+        Investment Research <span class="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Portal</span>
+      </h1>
+      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-400">
+        Access step-by-step valuation frameworks, formula sheets, CANSLIM breakout systems, sector rotations, and portfolio allocation trackers in one unified workspace.
+      </p>
+
+      <!-- Category quick filters -->
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-2" id="filter-chips">
+        <button onclick="filterCategory('all')" class="chip active-chip px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-600 text-white transition shadow-sm" data-category="all">
+          All Modules (5)
+        </button>
+        <button onclick="filterCategory('fundamentals')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="fundamentals">
+          Fundamentals & Formulas
+        </button>
+        <button onclick="filterCategory('strategy')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="strategy">
+          CANSLIM & Sector Playbook
+        </button>
+        <button onclick="filterCategory('portfolio')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="portfolio">
+          Portfolio Tracking
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div id="no-results" class="hidden text-center py-16">
+      <i data-lucide="search-x" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
+      <h3 class="text-lg font-semibold text-slate-300">No matching tools found</h3>
+      <p class="text-sm text-slate-500 mt-1">Try another keyword or reset the filter.</p>
+      <button onclick="resetFilter()" class="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-lg transition">Clear Search</button>
+    </div>
+
+    <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Cards will be populated by JavaScript -->
+    </div>
+  </main>
+
+  <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex-col">
+    <!-- Modal Header Bar -->
+    <div class="h-14 border-b border-slate-800 bg-slate-900/90 px-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3 overflow-hidden">
+        <span id="modal-tool-icon" class="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-400">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </span>
+        <div class="truncate">
+          <h2 id="modal-title" class="text-sm font-semibold text-white truncate">Tool Preview</h2>
+          <p id="modal-url" class="text-xs text-slate-400 truncate font-mono">about:blank</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button 
+          id="modal-open-external" 
+          onclick="openModalExternal()" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition"
+          title="Open in new window"
+        >
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">New Tab</span>
+        </button>
+
+        <button 
+          onclick="reloadIframe()" 
+          class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+          title="Reload Preview"
+        >
+          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+        </button>
+
+        <button 
+          onclick="closeModal()" 
+          class="p-2 rounded-lg bg-rose-900/30 hover:bg-rose-900/50 text-rose-300 border border-rose-800/40 transition"
+          title="Close Modal"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Iframe Container -->
+    <div class="relative flex-1 w-full bg-slate-950 overflow-hidden">
+      <!-- Loading indicator -->
+      <div id="iframe-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-slate-400 z-10">
+        <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+        <span class="text-xs tracking-wider uppercase">Loading Resource...</span>
+      </div>
+      
+      <iframe 
+        id="preview-iframe" 
+        src="about:blank" 
+        class="w-full h-full border-0" 
+        onload="document.getElementById('iframe-spinner').classList.add('hidden')"
+      ></iframe>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-800 bg-slate-900/50 py-8 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+      <div class="flex items-center gap-2">
+        <i data-lucide="compass" class="w-4 h-4 text-indigo-400"></i>
+        <span>Curated Stock Analysis Hub & Playbooks</span>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a href="https://github.com/tnjarivoli" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition flex items-center gap-1">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          tnjarivoli
+        </a>
+        <span>Direct GitHub Pages Host</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast notification component -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-xs font-medium shadow-xl opacity-0 translate-y-3 pointer-events-none transition duration-300">
+    <i data-lucide="check" class="w-4 h-4"></i>
+    <span id="toast-message">Copied to clipboard</span>
+  </div>
+
+  <script>
+    // Definition of the 5 stock research tools
+    const TOOLS_DATA = [
+      {
+        id: "stock-analysis",
+        title: "Quality + Growth + Reasonable Valuation",
+        subtitle: "Step-by-Step Fundamental Guide",
+        description: "A structured, disciplined evaluation framework combining balance sheet moat, compound earnings growth, and entry valuation margins.",
+        category: "fundamentals",
+        url: "https://tnjarivoli.github.io/main/stockanalysis.html",
+        icon: "scale",
+        color: "from-blue-500 to-indigo-600",
+        badge: "Core Framework",
+        tags: ["ROCE / ROE", "Free Cash Flow", "PE vs Growth", "Moat Scoring"]
+      },
+      {
+        id: "formulas",
+        title: "Stock Analysis Formulas",
+        subtitle: "Valuation & Ratio Cheat Sheet",
+        description: "Comprehensive financial formulas library covering DCF, PEG, Dupont decomposition, Enterprise Value metrics, and capital efficiency formulas.",
+        category: "fundamentals",
+        url: "https://tnjarivoli.github.io/main/formulas.html",
+        icon: "binary",
+        color: "from-emerald-500 to-teal-600",
+        badge: "Reference Library",
+        tags: ["DCF Formula", "P/B & ROE", "Working Capital", "Debt Coverage"]
+      },
+      {
+        id: "sector-analysis",
+        title: "Sector Analysis & Stockwise Rating",
+        subtitle: "Relative Strength & Category Ranking",
+        description: "Industry breakdown, sector performance heatmap, and relative rating matrix to identify tailwind sectors and best-of-breed companies.",
+        category: "strategy",
+        url: "https://tnjarivoli.github.io/main/sectoranalysis.html",
+        icon: "pie-chart",
+        color: "from-violet-500 to-purple-600",
+        badge: "Macro & Sector",
+        tags: ["Sector Rotation", "Peer Matrix", "Scorecard", "Industry Cyclicals"]
+      },
+      {
+        id: "playbook",
+        title: "CANSLIM - Minervini Playbook",
+        subtitle: "Momentum & Trend Template",
+        description: "High-momentum swing & trend trading system following William O'Neil's CANSLIM criteria and Mark Minervini's Volatility Contraction Pattern (VCP).",
+        category: "strategy",
+        url: "https://tnjarivoli.github.io/main/playbook.html",
+        icon: "trending-up",
+        color: "from-amber-500 to-orange-600",
+        badge: "Momentum Alpha",
+        tags: ["CANSLIM", "Minervini VCP", "Pivot Points", "Risk-to-Reward"]
+      },
+      {
+        id: "portfolio",
+        title: "Stock Portfolio",
+        subtitle: "Holdings Tracker & Allocation",
+        description: "Portfolio management dashboard to monitor asset weighting, cash levels, sector distribution, unrealized returns, and risk exposure.",
+        category: "portfolio",
+        url: "https://tnjarivoli.github.io/main/portfolio.html",
+        icon: "briefcase",
+        color: "from-cyan-500 to-blue-600",
+        badge: "Portfolio Management",
+        tags: ["Position Sizing", "Diversification", "Risk Limits", "Performance"]
+      }
+    ];
+
+    let currentCategory = "all";
+    let searchQuery = "";
+    let activeModalUrl = "";
+
+    function renderCards() {
+      const container = document.getElementById("cards-grid");
+      const noResults = document.getElementById("no-results");
+      container.innerHTML = "";
+
+      const filtered = TOOLS_DATA.filter(tool => {
+        const matchesCategory = currentCategory === "all" || tool.category === currentCategory;
+        const q = searchQuery.toLowerCase().trim();
+        const matchesSearch = !q || 
+          tool.title.toLowerCase().includes(q) || 
+          tool.subtitle.toLowerCase().includes(q) ||
+          tool.description.toLowerCase().includes(q) ||
+          tool.tags.some(t => t.toLowerCase().includes(q));
+
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        noResults.classList.remove("hidden");
+        return;
+      }
+      noResults.classList.add("hidden");
+
+      filtered.forEach(tool => {
+        const card = document.createElement("div");
+        card.className = "card-glow bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 relative group";
+
+        card.innerHTML = `
+          <div>
+            <!-- Top badge row -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-300">
+                ${tool.badge}
+              </span>
+              <button 
+                onclick="copyToClipboard('${tool.url}')" 
+                class="text-slate-400 hover:text-slate-200 p-1.5 rounded-md hover:bg-slate-800 transition" 
+                title="Copy direct link"
+              >
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <!-- Header icon and title -->
+            <div class="flex items-start gap-4 mb-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${tool.color} flex items-center justify-center shrink-0 shadow-md">
+                <i data-lucide="${tool.icon}" class="w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-100 text-lg leading-tight group-hover:text-indigo-300 transition">
+                  ${tool.title}
+                </h3>
+                <p class="text-xs font-medium text-slate-400 mt-0.5">${tool.subtitle}</p>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs text-slate-400 leading-relaxed my-3">
+              ${tool.description}
+            </p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 my-4">
+              ${tool.tags.map(t => `<span class="px-2 py-0.5 rounded text-[11px] bg-slate-800/80 text-slate-400 border border-slate-800 font-mono">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="pt-4 border-t border-slate-800/80 flex items-center gap-2">
+            <button 
+              onclick="openInModal('${tool.url}', '${tool.title.replace(/'/g, "\\'")}', '${tool.icon}')" 
+              class="flex-1 py-2 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow-sm"
+            >
+              <i data-lucide="layout" class="w-3.5 h-3.5"></i>
+              Quick Preview
+            </button>
+            
+            <a 
+              href="${tool.url}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold border border-slate-700 flex items-center justify-center gap-1.5 transition"
+              title="Open full page in new tab"
+            >
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              Open
+            </a>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val;
+      renderCards();
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      const chips = document.querySelectorAll(".chip");
+      chips.forEach(btn => {
+        if (btn.getAttribute("data-category") === cat) {
+          btn.className = "chip px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-600 text-white transition shadow-sm";
+        } else {
+          btn.className = "chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition";
+        }
+      });
+      renderCards();
+    }
+
+    function resetFilter() {
+      document.getElementById("search-input").value = "";
+      searchQuery = "";
+      filterCategory("all");
+    }
+
+    function openInModal(url, title, icon) {
+      activeModalUrl = url;
+      document.getElementById("modal-title").innerText = title;
+      document.getElementById("modal-url").innerText = url;
+      
+      const iconContainer = document.getElementById("modal-tool-icon");
+      iconContainer.innerHTML = `<i data-lucide="${icon || 'layout'}" class="w-4 h-4"></i>`;
+      lucide.createIcons();
+
+      const spinner = document.getElementById("iframe-spinner");
+      spinner.classList.remove("hidden");
+
+      const iframe = document.getElementById("preview-iframe");
+      iframe.src = url;
+
+      const modal = document.getElementById("preview-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("preview-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      const iframe = document.getElementById("preview-iframe");
+      iframe.src = "about:blank";
+      document.body.style.overflow = "auto";
+    }
+
+    function reloadIframe() {
+      const iframe = document.getElementById("preview-iframe");
+      const spinner = document.getElementById("iframe-spinner");
+      spinner.classList.remove("hidden");
+      iframe.src = activeModalUrl;
+    }
+
+    function openModalExternal() {
+      if (activeModalUrl) {
+        window.open(activeModalUrl, '_blank');
+      }
+    }
+
+    function copyToClipboard(text) {
+      const tempInput = document.createElement("input");
+      tempInput.style.position = "absolute";
+      tempInput.style.left = "-9999px";
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand("copy");
+        showToast("Link copied to clipboard!");
+      } catch (err) {
+        showToast("Failed to copy link");
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toast-message").innerText = msg;
+      toast.classList.remove("opacity-0", "translate-y-3", "pointer-events-none");
+      toast.classList.add("opacity-100", "translate-y-0");
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-3", "pointer-events-none");
+        toast.classList.remove("opacity-100", "translate-y-0");
+      }, 2500);
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains("dark");
+      const themeIcon = document.getElementById("theme-icon");
+      
+      if (isDark) {
+        html.classList.remove("dark");
+        document.body.classList.remove("bg-slate-950", "text-slate-100");
+        document.body.classList.add("bg-slate-50", "text-slate-900");
+        themeIcon.setAttribute("data-lucide", "moon");
+      } else {
+        html.classList.add("dark");
+        document.body.classList.add("bg-slate-950", "text-slate-100");
+        document.body.classList.remove("bg-slate-50", "text-slate-900");
+        themeIcon.setAttribute("data-lucide", "sun");
+      }
+      lucide.createIcons();
+    }
+
+    // ESC shortcut to close preview modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    // Initial render
+    window.onload = function() {
+      renderCards();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
