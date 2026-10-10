@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stock Analysis Formulas: One Page</title>
+<style>
+:root{--bg:#fbfbf8;--ink:#1d2622;--mute:#58655e;--line:#d0d8d1;--acc:#1f6b4f;--soft:#eef4f0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a17;--ink:#e6ece7;--mute:#9aa9a0;--line:#33403a;--acc:#5fc79b;--soft:#1c2823}}
+:root[data-theme="dark"]{--bg:#141a17;--ink:#e6ece7;--mute:#9aa9a0;--line:#33403a;--acc:#5fc79b;--soft:#1c2823}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 "IBM Plex Sans",Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:16px 14px 40px}
+h1{font-size:1.4rem;margin:0}
+.sub{color:var(--mute);margin:2px 0 12px;font-size:.85rem}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:10px}
+section{border:1px solid var(--line);border-radius:6px;overflow:hidden;break-inside:avoid}
+h2{margin:0;padding:5px 9px;font-size:.9rem;background:var(--acc);color:var(--bg)}
+table{width:100%;border-collapse:collapse}
+td{padding:4px 8px;border-top:1px solid var(--line);vertical-align:top;font-size:.82rem}
+tr:first-of-type td{border-top:0}
+td:first-child{width:27%;font-weight:600}
+td:nth-child(2){font-weight:600;color:var(--acc);width:46%}
+td:nth-child(3){color:var(--mute)}
+.chain{border:1px solid var(--line);background:var(--soft);padding:6px 10px;border-radius:6px;margin-bottom:10px;font-size:.82rem}
+.foot{color:var(--mute);font-size:.75rem;margin-top:10px}
+@page{size:A4 landscape;margin:8mm}
+@media print{body{background:#fff;color:#000;font-size:7.4pt;line-height:1.2}main{max-width:none;padding:0}h1{font-size:12pt}.g{grid-template-columns:repeat(4,1fr);gap:4px}td{padding:1.5px 4px;font-size:6.6pt}h2{font-size:7.6pt;padding:2px 5px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.chain,.foot,.sub{font-size:6.6pt;padding:2px 5px;margin:2px 0}}
+</style>
+</head>
+<body>
+<main>
+<h1>Stock Analysis Formulas: One Page</h1>
+<p class="sub">Quality + Growth + Reasonable Valuation. Rs. crore for company totals, Rs. for per-share values. Good levels are rules of thumb.</p>
+<div class="chain"><b>Profit ladder:</b> Sales - Expenses = <b>Operating profit</b> &rarr; - Depreciation + Other income = <b>EBIT</b> &rarr; - Interest = <b>Profit before tax</b> &rarr; - Tax = <b>Net profit</b> &rarr; &divide; Shares = <b>EPS</b></div>
+
+<div class="g">
+
+<section><h2>1. Profit and margins</h2><table>
+<tr><td>Operating profit</td><td>Sales - Expenses (before depreciation, interest)</td><td>Core business profit</td></tr>
+<tr><td>OPM %</td><td>Operating profit / Sales x 100</td><td>Stable or rising</td></tr>
+<tr><td>EBITDA</td><td>Net profit + Interest + Tax + Depreciation</td><td>= Operating profit + Other income</td></tr>
+<tr><td>EBIT</td><td>Net profit + Interest + Tax<br>or EBITDA - Depreciation</td><td>Core only: Operating profit - Depreciation</td></tr>
+<tr><td>Profit before tax</td><td>EBIT - Interest</td><td></td></tr>
+<tr><td>Net profit margin</td><td>Net profit / Sales x 100</td><td>Higher than peers</td></tr>
+<tr><td>Tax rate</td><td>Tax / Profit before tax x 100</td><td>Watch very low rates</td></tr>
+<tr><td>Other income share</td><td>Other income / Profit before tax x 100</td><td>Below 10-15%</td></tr>
+</table></section>
+
+<section><h2>2. Per-share values</h2><table>
+<tr><td>Number of shares</td><td>Equity capital / Face value</td><td>Use weighted average</td></tr>
+<tr><td>EPS</td><td>(Net profit - Preference dividend) / Shares</td><td>Prefer diluted EPS</td></tr>
+<tr><td>Book value / share</td><td>(Equity capital + Reserves) / Shares</td><td></td></tr>
+<tr><td>Market cap</td><td>Price x Shares</td><td></td></tr>
+<tr><td>Dividend payout %</td><td>Dividend / Net profit x 100</td><td></td></tr>
+<tr><td>Retention ratio</td><td>1 - Payout ratio</td><td></td></tr>
+</table></section>
+
+<section><h2>3. Returns on capital (quality)</h2><table>
+<tr><td>Net worth</td><td>Equity capital + Reserves</td><td>Shareholders' funds</td></tr>
+<tr><td>ROE %</td><td>Net profit / Net worth x 100</td><td>15%+ for years. Use average net worth</td></tr>
+<tr><td>Capital employed</td><td>Net worth + Borrowings<br>or Total assets - Current liabilities</td><td></td></tr>
+<tr><td>ROCE %</td><td>EBIT / Capital employed x 100</td><td>15-20%+, steady</td></tr>
+<tr><td>ROA %</td><td>Net profit / Total assets x 100</td><td>Banks: 1.5%+ is strong</td></tr>
+<tr><td>DuPont ROE</td><td>Net margin x Asset turnover x Leverage</td><td>Shows where ROE comes from</td></tr>
+<tr><td>Asset turnover</td><td>Sales / Total assets</td><td></td></tr>
+<tr><td>Leverage</td><td>Total assets / Net worth</td><td>High = debt-driven ROE</td></tr>
+</table></section>
+
+<section><h2>4. Safety and cash flow</h2><table>
+<tr><td>Debt to equity</td><td>Borrowings / Net worth</td><td>Below 1 (non-financial)</td></tr>
+<tr><td>Interest cover</td><td>EBIT / Interest</td><td>Above 3-4</td></tr>
+<tr><td>Net debt</td><td>Borrowings - Cash and investments</td><td></td></tr>
+<tr><td>Net debt / EBITDA</td><td>Net debt / EBITDA</td><td>Below 2-3</td></tr>
+<tr><td>Cash conversion (CFO/PAT)</td><td>Operating cash flow / Net profit</td><td>70-100%+ over 3-5 years</td></tr>
+<tr><td>Free cash flow</td><td>Operating cash flow - Capex</td><td>Positive, growing</td></tr>
+<tr><td>FCF yield %</td><td>FCF / Market cap x 100</td><td></td></tr>
+</table></section>
+
+<section><h2>5. Working capital</h2><table>
+<tr><td>Receivable days</td><td>Receivables / Sales x 365</td><td>Should not rise faster than sales</td></tr>
+<tr><td>Inventory days</td><td>Inventory / Cost of goods x 365</td><td>Stable</td></tr>
+<tr><td>Payable days</td><td>Payables / Cost of goods x 365</td><td></td></tr>
+<tr><td>Cash conversion cycle</td><td>Receivable + Inventory - Payable days</td><td>Shorter is better</td></tr>
+</table></section>
+
+<section><h2>6. Growth</h2><table>
+<tr><td>YoY growth %</td><td>(This period / Same period last year - 1) x 100</td><td>Use YoY for quarters</td></tr>
+<tr><td>CAGR %</td><td>[(End / Start)^(1/Years) - 1] x 100</td><td>Do for 3, 5, 10 years</td></tr>
+<tr><td>Sustainable growth</td><td>ROE x Retention ratio</td><td>Growth far above needs debt or new shares</td></tr>
+<tr><td>Operating leverage</td><td>Profit growth % / Sales growth %</td><td>Above 1 if margins improve</td></tr>
+</table></section>
+
+<section><h2>7. Valuation</h2><table>
+<tr><td>P/E</td><td>Price / EPS<br>or Market cap / Net profit</td><td>Compare with own history, peers</td></tr>
+<tr><td>Earnings yield %</td><td>EPS / Price x 100 (= 1 / P/E)</td><td>Compare with FD or bond yield</td></tr>
+<tr><td>PEG</td><td>P/E / EPS growth % (annual)</td><td>1-1.5 fair, above 2 expensive</td></tr>
+<tr><td>P/B</td><td>Price / Book value per share</td><td>Banks, asset-heavy firms</td></tr>
+<tr><td>Enterprise value (EV)</td><td>Market cap + Borrowings - Cash</td><td></td></tr>
+<tr><td>EV/EBITDA</td><td>EV / EBITDA</td><td>Debt-heavy, capital-intensive</td></tr>
+<tr><td>Price/Sales</td><td>Market cap / Sales</td><td>Loss-making firms</td></tr>
+<tr><td>Dividend yield %</td><td>Dividend per share / Price x 100</td><td></td></tr>
+<tr><td>Premium to own history</td><td>(Current P/E / Median P/E - 1) x 100</td><td>Above 20-25% needs reason</td></tr>
+</table></section>
+
+<section><h2>8. Expected return and price plan</h2><table>
+<tr><td>Future EPS</td><td>EPS x (1 + g)^n</td><td>g = growth rate, n = years</td></tr>
+<tr><td>Future price</td><td>Future EPS x Exit P/E</td><td>Use a conservative exit P/E</td></tr>
+<tr><td>Expected return %</td><td>[(Future price / Price)^(1/n) - 1] x 100 + Dividend yield</td><td>Compare with required 12-15%</td></tr>
+<tr><td>Margin of safety %</td><td>(Estimated value - Price) / Estimated value x 100</td><td>Higher is safer</td></tr>
+<tr><td>Risk-reward ratio</td><td>(Target - Entry) / (Entry - Stop level)</td><td>2 or more</td></tr>
+<tr><td>Rally check %</td><td>(Price now / Price 3 months ago - 1) x 100</td><td>Above 40%: wait</td></tr>
+<tr><td>Tranche size</td><td>Total planned amount / Number of tranches (3-4)</td><td>Write before buying</td></tr>
+</table></section>
+
+</div>
+<p class="foot">Example, GE Shipping FY26: Net profit 2,943 / Net worth 16,963 gives ROE 17.3% (on year-end net worth). EBIT 3,162 / Capital employed 18,050 gives ROCE 17.5%. Screener's own ratios may use different bases, so keep one method for all stocks. Banks and NBFCs use ROA, ROE, P/B and NPAs instead of ROCE and D/E. For study only, not investment advice.</p>
+</main>
+</body>
+</html>

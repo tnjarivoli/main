@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Sector Fundamental Checklist & Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --bg-base: #f4f6f8;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-category: #e2e8f0;
+      --border-subtle: #d5dbe3;
+      --border-focus: #2456c9;
+      --text-main: #1c2430;
+      --text-muted: #5d6a7a;
+      --text-dim: #7f8b99;
+      --accent-blue: #2456c9;
+      --category-label: #1e3a8a;
+      --r0-bg: rgba(200, 50, 40, 0.15);
+      --r0-text: #b91c1c;
+      --r1-bg: rgba(220, 160, 0, 0.18);
+      --r1-text: #b45309;
+      --r2-bg: rgba(60, 160, 90, 0.16);
+      --r2-text: #15803d;
+      --r3-bg: rgba(30, 140, 80, 0.28);
+      --r3-text: #047857;
+      --rank-gold-bg: #fef08a;
+      --rank-gold-text: #854d0e;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    [data-theme="dark"] {
+      --bg-base: #141a22;
+      --bg-surface: #1c242f;
+      --bg-surface-elevated: #232d3b;
+      --bg-category: #2a3747;
+      --border-subtle: #33404f;
+      --border-focus: #7ea4ff;
+      --text-main: #e6ebf1;
+      --text-muted: #93a0b1;
+      --text-dim: #64748b;
+      --accent-blue: #7ea4ff;
+      --category-label: #93c5fd;
+      --r0-bg: rgba(255, 110, 100, 0.22);
+      --r0-text: #f87171;
+      --r1-bg: rgba(230, 190, 70, 0.22);
+      --r1-text: #fbbf24;
+      --r2-bg: rgba(90, 200, 140, 0.2);
+      --r2-text: #4ade80;
+      --r3-bg: rgba(70, 200, 130, 0.35);
+      --r3-text: #34d399;
+      --rank-gold-bg: rgba(234, 179, 8, 0.25);
+      --rank-gold-text: #fde047;
+      --card-shadow: none;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.15s ease, color 0.15s ease; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 14px 18px;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--accent-blue), #38bdf8);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; color: #ffffff; font-size: 14px; flex-shrink: 0;
+    }
+    .brand h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .brand p { font-size: 11px; color: var(--text-muted); }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .bridge-status-badge {
+      font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 20px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .status-online { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .status-offline { background: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+
+    .sector-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+    .btn-tab {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      color: var(--text-main); padding: 5px 12px; border-radius: 6px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-tab.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+    .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .search-input-group { position: relative; display: inline-flex; z-index: 1000; }
+    .ticker-input-wrap {
+      display: flex; align-items: center; background: var(--bg-surface);
+      border: 1px solid var(--border-subtle); border-radius: 6px;
+      box-shadow: var(--card-shadow); position: relative;
+    }
+    .period-input {
+      background: var(--bg-surface-elevated); border: none; border-right: 1px solid var(--border-subtle);
+      padding: 7px 10px; color: var(--text-muted); font-size: 12px; font-weight: 700;
+      outline: none; width: 80px; border-radius: 6px 0 0 6px;
+    }
+    .search-icon-decor { padding-left: 9px; color: var(--text-dim); font-size: 13px; }
+    .ticker-input {
+      background: transparent; border: none; padding: 7px 8px;
+      color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12.5px; font-weight: 500; outline: none; width: 170px;
+    }
+    .btn-add {
+      background: var(--accent-blue); border: none; color: #ffffff;
+      padding: 0 14px; font-weight: 600; font-size: 12px; cursor: pointer;
+      height: 32px; border-radius: 0 6px 6px 0;
+    }
+    .btn-add:hover { opacity: 0.9; }
+
+    .autocomplete-dropdown {
+      position: absolute; top: 100%; left: 105px; width: 260px;
+      background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); z-index: 9999;
+      margin-top: 4px; overflow: hidden; display: none;
+    }
+    [data-theme="dark"] .autocomplete-dropdown { background: #1e293b; border-color: #334155; }
+
+    .autocomplete-item {
+      padding: 8px 14px; cursor: pointer; font-size: 12.5px;
+      color: #1f2937; display: flex; align-items: center; justify-content: space-between;
+    }
+    [data-theme="dark"] .autocomplete-item { color: #e2e8f0; }
+    .autocomplete-item.active, .autocomplete-item:hover { background: #4f46e5 !important; color: #ffffff !important; }
+
+    .btn-action {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      color: var(--text-main); border-radius: 6px; padding: 6px 10px;
+      font-size: 12px; font-weight: 600; cursor: pointer; display: flex;
+      align-items: center; gap: 5px; box-shadow: var(--card-shadow);
+    }
+    .btn-action:hover { border-color: var(--border-focus); }
+    .btn-save-cloud { background: #059669; color: #ffffff; border: none; }
+    .btn-load-cloud { background: #0284c7; color: #ffffff; border: none; }
+
+    .table-container {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: 8px; overflow-x: auto; box-shadow: var(--card-shadow);
+      display: inline-block; max-width: 100%;
+    }
+    table { width: max-content; min-width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; }
+    th, td { padding: 5px 8px; border-bottom: 1px solid var(--border-subtle); white-space: nowrap; }
+
+    thead th {
+      background: var(--bg-surface); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; color: var(--text-muted); position: sticky; top: 0; z-index: 2;
+    }
+    thead th.metric-col { width: 240px; min-width: 240px; border-right: 1px solid var(--border-subtle); padding: 6px 10px; font-size: 11px; }
+    td.metric-col {
+      width: 240px; min-width: 240px; max-width: 240px; font-size: 11.5px; font-weight: 600;
+      color: var(--text-main); border-right: 1px solid var(--border-subtle); padding: 5px 10px; line-height: 1.25;
+    }
+    td.metric-col .metric-desc { font-size: 9.5px; font-weight: 400; color: var(--text-dim); margin-top: 1px; white-space: normal; line-height: 1.2; }
+    thead th.stock-col, td.stock-col { width: 185px; min-width: 185px; text-align: center; border-right: 1px solid var(--border-subtle); padding: 4px 6px; }
+    
+    .stock-header-wrap { display: flex; justify-content: space-between; align-items: flex-start; padding: 1px 2px; }
+    .stock-meta { display: flex; align-items: flex-start; gap: 6px; text-align: left; }
+    .rank-tag { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle); margin-top: 1px; }
+    .rank-tag.rank-first { background: var(--rank-gold-bg); color: var(--rank-gold-text); border: none; }
+    
+    .stock-symbol { font-size: 12px; font-weight: 700; color: var(--text-main); font-family: 'JetBrains Mono', monospace; display: block; line-height: 1.2; }
+    .stock-fullname { font-size: 10px; font-weight: 600; color: var(--text-muted); max-width: 125px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-top: 1px; }
+    .stock-period { font-size: 9px; color: var(--text-dim); font-weight: 600; display: block; margin-top: 1px; }
+    .btn-remove { background: transparent; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; }
+    .btn-remove:hover { color: #ef4444; }
+
+    tr.category-row td {
+      background: var(--bg-category); font-size: 10px; font-weight: 800;
+      color: var(--category-label); text-transform: uppercase; padding: 5px 10px;
+    }
+
+    .cell-value-wrap {
+      display: inline-flex; align-items: center; justify-content: space-between;
+      width: 100%; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle);
+      border-radius: 4px; padding: 2px 5px;
+    }
+    .cell-value-input {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+      color: var(--text-main); background: transparent; border: none; outline: none; width: 65px;
+    }
+    .cell-value-input:focus { background: var(--bg-surface); border-bottom: 1px solid var(--accent-blue); }
+
+    .badge-r { font-size: 8px; font-weight: 800; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; }
+    .r0 { background: var(--r0-bg); color: var(--r0-text); }
+    .r1 { background: var(--r1-bg); color: var(--r1-text); }
+    .r2 { background: var(--r2-bg); color: var(--r2-text); }
+    .r3 { background: var(--r3-bg); color: var(--r3-text); }
+
+    tr.summary-row td { background: var(--bg-surface-elevated); padding: 6px 8px; border-bottom: 1px solid var(--border-subtle); }
+    .score-badge { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; }
+    .verdict-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 5px; border-radius: 4px; }
+    .vd-strong { background: var(--r3-bg); color: var(--r3-text); }
+    .vd-decent { background: var(--r2-bg); color: var(--r2-text); }
+    .vd-mixed { background: var(--r1-bg); color: var(--r1-text); }
+    .vd-weak { background: var(--r0-bg); color: var(--r0-text); }
+    .vd-fill { background: var(--bg-category); color: var(--text-muted); }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px);
+      z-index: 10000; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-card {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: 10px; width: 450px; max-width: 100%; box-shadow: 0 16px 36px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; max-height: 85vh;
+    }
+    .modal-header { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+    .modal-actions-bar {
+      padding: 6px 16px; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .btn-link { background: none; border: none; color: var(--accent-blue); font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: underline; }
+    .stock-list-container { padding: 12px 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .stock-item-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 5px; background: var(--bg-surface-elevated); cursor: pointer; }
+    .stock-item-row:hover { background: var(--bg-category); }
+    .stock-item-row input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent-blue); cursor: pointer; }
+    .modal-footer { padding: 10px 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: 8px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">F</div>
+      <div>
+        <h1 id="appTitle">Sector Fundamental Matrix</h1>
+        <p id="appSubtitle">Checklist Scored &bull; Auto-Scraped + Manual Override</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="bridge-status-badge status-offline" id="bridgeStatusIndicator">● Checking Service...</span>
+      <button class="btn-action" id="btnThemeToggle">🌙 Dark Mode</button>
+    </div>
+  </header>
+
+  <!-- Navigation in strict Alphabetical Order -->
+  <div class="sector-nav" id="sectorNav">
+    <button class="btn-tab active" data-tab="auto">Auto</button>
+    <button class="btn-tab" data-tab="bank">Banks</button>
+    <button class="btn-tab" data-tab="capgoods">Capital Goods</button>
+    <button class="btn-tab" data-tab="nbfc">NBFCs</button>
+    <button class="btn-tab" data-tab="other">Other</button>
+    <button class="btn-tab" data-tab="pharma">Pharma</button>
+  </div>
+
+  <div class="controls">
+    <div class="search-input-group">
+      <div class="ticker-input-wrap">
+        <input type="text" id="periodInput" class="period-input" placeholder="Q1 FY27" value="Q1 FY27">
+        <span class="search-icon-decor">🔍</span>
+        <input type="text" id="tickerInput" class="ticker-input" placeholder="Search company..." autocomplete="off">
+        <button class="btn-add" id="btnAddTicker">+ Scrape & Add</button>
+      </div>
+      <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+    </div>
+
+    <button class="btn-action btn-save-cloud" id="btnSaveCloud">💾 Save to Sheet</button>
+    <button class="btn-action btn-load-cloud" id="btnLoadCloud">📂 Load from Sheet</button>
+    <button class="btn-action" id="btnClearCurrent">🗑 Clear Table</button>
+  </div>
+
+  <div class="table-container">
+    <table id="matrixTable">
+      <thead>
+        <tr id="headerRow">
+          <th class="metric-col">Metric & Definition</th>
+        </tr>
+      </thead>
+      <tbody id="matrixBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Modal Dialog for Cloud Sheet Stock Selection -->
+  <div class="modal-overlay" id="stockModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Select Stocks from Cloud Sheet</h3>
+        <button class="btn-remove" id="btnModalClose">&times;</button>
+      </div>
+      <div class="modal-actions-bar">
+        <span id="modalCounter" style="font-size: 11px; color: var(--text-muted);">0 stocks available</span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-link" id="btnSelectAll">Select All</button>
+          <button class="btn-link" id="btnDeselectAll">Deselect All</button>
+        </div>
+      </div>
+      <div class="stock-list-container" id="stockListContainer"></div>
+      <div class="modal-footer">
+        <button class="btn-action" id="btnModalCancel">Cancel</button>
+        <button class="btn-action btn-load-cloud" id="btnModalImport">Import Selected</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLG4FObrhidjPF9oelbbyl7_zmFpq7otPJCJl2t-6WLi05GledjpOpbsVJ4yEJBnEslg/exec";
+
+    let isBridgeOnline = false;
+
+    const RATING_NAMES = ["Poor", "Average", "Good", "Excellent"];
+    const RATING_CLASSES = ["r0", "r1", "r2", "r3"];
+
+    const SECTORS = {
+      auto: {
+        title: "Auto & Ancillaries Matrix", sheetTab: "Auto", val: "pe", valName: "Step 8: P/E Ratio (x)",
+        phases: [
+          { title: "Step 1 & 4: Solvency & Balance Sheet", metrics: [
+            { k: "nde", n: "Net Debt / EBITDA (x)", d: "d", c: [2, 1, 0.5], desc: "Net cash balance sheets score best" }
+          ]},
+          { title: "Step 2: Moat & Electric Transition", metrics: [
+            { k: "evmix", n: "EV Mix (%)", d: "u", c: [2, 5, 10], desc: "Share of EV in shipments" }
+          ]},
+          { title: "Step 3: Return Quality", metrics: [
+            { k: "roce", n: "ROCE (%)", d: "u", c: [10, 15, 20], desc: "Return on capital employed" },
+            { k: "ebitda", n: "EBITDA Margin (%)", d: "u", c: [8, 11, 14], desc: "Operating profitability" }
+          ]},
+          { title: "Step 5: Margin Durability", metrics: [
+            { k: "rm", n: "RM Cost (% of Sales)", d: "d", c: [70, 65, 60], desc: "Raw material cost exposure" },
+            { k: "disc", n: "Discount (% of ASP)", d: "d", c: [5, 3, 1.5], desc: "Dealer discounting pressure" }
+          ]},
+          { title: "Step 6: Working Capital", metrics: [
+            { k: "wcd", n: "Working Capital Days", d: "d", c: [60, 40, 20], desc: "Cash conversion cycle" }
+          ]},
+          { title: "Step 7: Volume & Revenue Growth", metrics: [
+            { k: "volg", n: "Volume Growth (%)", d: "u", c: [3, 7, 12], desc: "Unit dispatches growth YoY" },
+            { k: "revg", n: "Revenue Growth (%)", d: "u", c: [5, 10, 15], desc: "YoY top-line expansion" }
+          ]}
+        ]
+      },
+      bank: {
+        title: "Bank Fundamental Matrix", sheetTab: "Banks", val: "pb", valName: "Step 8: P/B Ratio (x)",
+        phases: [
+          { title: "Step 1: Solvency & Asset Quality", metrics: [
+            { k: "gnpa", n: "Gross NPA (%)", d: "d", c: [4, 2.5, 1.5], desc: "Bad loans; lower is safer" },
+            { k: "nnpa", n: "Net NPA (%)", d: "d", c: [1.2, 0.6, 0.3], desc: "Unprovided bad loans" },
+            { k: "cc", n: "Credit Cost (%)", d: "d", c: [1.5, 1, 0.5], desc: "Annual provisions as % of loans" },
+            { k: "pcr", n: "Provision Coverage PCR (%)", d: "u", c: [60, 70, 80], desc: "Bad debt cushion" }
+          ]},
+          { title: "Step 2: Franchise Moat", metrics: [
+            { k: "casa", n: "CASA Ratio (%)", d: "u", c: [25, 35, 40], desc: "Low-cost deposit funding moat" },
+            { k: "nim", n: "NIM (%)", d: "u", c: [2.5, 3, 4], desc: "Net interest lending spread" }
+          ]},
+          { title: "Step 3: Return Quality", metrics: [
+            { k: "roa", n: "ROA (%)", d: "u", c: [0.8, 1.2, 1.8], desc: "Return on total assets" },
+            { k: "roe", n: "ROE (%)", d: "u", c: [12, 15, 18], desc: "Return on equity" }
+          ]},
+          { title: "Step 4 & 5: Capital & Efficiency", metrics: [
+            { k: "car", n: "Capital Adequacy CRAR (%)", d: "u", c: [12, 15, 18], desc: "Shock cushion" },
+            { k: "cet1", n: "CET1 Ratio (%)", d: "u", c: [10, 12, 14], desc: "Highest quality core equity" },
+            { k: "ci", n: "Cost-to-Income (%)", d: "d", c: [55, 45, 40], desc: "Cost drag; lower is efficient" }
+          ]},
+          { title: "Step 7: Growth Quality", metrics: [
+            { k: "lg", n: "Loan Growth (%)", d: "u", c: [8, 12, 18], desc: "Credit expansion YoY" },
+            { k: "dg", n: "Deposit Growth (%)", d: "u", c: [8, 10, 15], desc: "Deposit expansion YoY" }
+          ]}
+        ]
+      },
+      capgoods: {
+        title: "Capital Goods Matrix", sheetTab: "CapitalGoods", val: "pe", valName: "Step 8: P/E Ratio (x)",
+        phases: [
+          { title: "Step 1 & 4: Solvency Cushion", metrics: [
+            { k: "nde", n: "Net Debt / EBITDA (x)", d: "d", c: [2, 1, 0.3], desc: "Net debt cushion" }
+          ]},
+          { title: "Step 2: Revenue Visibility", metrics: [
+            { k: "obs", n: "Order Book / Sales (x)", d: "u", c: [1.5, 2.5, 3.5], desc: "Unbilled executable book" }
+          ]},
+          { title: "Step 3: Quality of Return", metrics: [
+            { k: "roce", n: "ROCE (%)", d: "u", c: [12, 16, 20], desc: "Return on capital employed" },
+            { k: "ebitda", n: "EBITDA Margin (%)", d: "u", c: [8, 12, 16], desc: "Operating profitability" }
+          ]},
+          { title: "Step 5: Margin Durability", metrics: [
+            { k: "rm", n: "RM Cost (% of Sales)", d: "d", c: [70, 65, 60], desc: "Raw material cost exposure; lower is safer" }
+          ]},
+          { title: "Step 6 & 7: Working Capital & Growth", metrics: [
+            { k: "wcd", n: "Working Capital Days", d: "d", c: [150, 100, 60], desc: "Cash conversion cycle" },
+            { k: "recd", n: "Receivable Days", d: "d", c: [120, 90, 60], desc: "Days sales outstanding" },
+            { k: "oig", n: "Order Inflow Growth (%)", d: "u", c: [5, 12, 20], desc: "Fresh order growth YoY" },
+            { k: "revg", n: "Revenue Growth (%)", d: "u", c: [5, 10, 15], desc: "Revenue execution YoY" }
+          ]}
+        ]
+      },
+      nbfc: {
+        title: "NBFC Fundamental Matrix", sheetTab: "NBFCs", val: "pb", valName: "Step 8: P/B Ratio (x)",
+        phases: [
+          { title: "Step 1: Solvency & Asset Quality", metrics: [
+            { k: "gs3", n: "Gross Stage 3 (%)", d: "d", c: [5, 3, 1.5], desc: "90+ DPD loans; lower is safer" },
+            { k: "ns3", n: "Net Stage 3 (%)", d: "d", c: [2, 1, 0.5], desc: "Unprovided bad loans" },
+            { k: "pcr", n: "Stage 3 Coverage PCR (%)", d: "u", c: [35, 50, 65], desc: "Provision cushion" },
+            { k: "cc", n: "Credit Cost (%)", d: "d", c: [2.5, 1.5, 0.75], desc: "Annual provisioning as % of AUM" }
+          ]},
+          { title: "Step 2: Franchise Moat", metrics: [
+            { k: "nim", n: "NIM / Spread (%)", d: "u", c: [3, 5, 8], desc: "Segment lending spread" }
+          ]},
+          { title: "Step 3: Quality of Return", metrics: [
+            { k: "roa", n: "ROA (%)", d: "u", c: [1.5, 2.5, 3.5], desc: "Operating profit on book" },
+            { k: "roe", n: "ROE (%)", d: "u", c: [10, 14, 18], desc: "Return on equity" }
+          ]},
+          { title: "Step 4 & 5: Capital & Efficiency", metrics: [
+            { k: "car", n: "CRAR (%)", d: "u", c: [17, 20, 25], desc: "Capital cushion" },
+            { k: "de", n: "Debt to Equity (x)", d: "d", c: [6, 4.5, 3], desc: "Balance sheet leverage" },
+            { k: "ci", n: "Cost-to-Income (%)", d: "d", c: [50, 40, 30], desc: "Overheads / net income" }
+          ]},
+          { title: "Step 7: Growth Quality", metrics: [
+            { k: "aum", n: "AUM Growth (%)", d: "u", c: [12, 18, 25], desc: "Lending growth YoY" }
+          ]}
+        ]
+      },
+      other: {
+        title: "General / Diversified Matrix", sheetTab: "Other", val: "pe", valName: "Step 8: P/E Ratio (x)",
+        phases: [
+          { title: "Step 1 & 4: Solvency & Capital Health", metrics: [
+            { k: "nde", n: "Net Debt / EBITDA (x)", d: "d", c: [2.5, 1.5, 0.5], desc: "Solvency risk" }
+          ]},
+          { title: "Step 3: Quality of Return", metrics: [
+            { k: "roce", n: "ROCE (%)", d: "u", c: [12, 18, 24], desc: "Return on capital employed" },
+            { k: "roe", n: "ROE (%)", d: "u", c: [12, 16, 20], desc: "Return on equity" },
+            { k: "ebitda", n: "EBITDA Margin (%)", d: "u", c: [10, 15, 22], desc: "Operating profitability" }
+          ]},
+          { title: "Step 6 & 7: Working Capital & Growth", metrics: [
+            { k: "wcd", n: "Working Capital Days", d: "d", c: [90, 60, 30], desc: "Working capital days" },
+            { k: "revg", n: "Revenue Growth (%)", d: "u", c: [6, 12, 18], desc: "YoY top-line revenue expansion" }
+          ]}
+        ]
+      },
+      pharma: {
+        title: "Pharmaceuticals Matrix", sheetTab: "Pharma", val: "pe", valName: "Step 8: P/E Ratio (x)",
+        phases: [
+          { title: "Step 1 & 4: Solvency & Balance Sheet", metrics: [
+            { k: "nde", n: "Net Debt / EBITDA (x)", d: "d", c: [2, 1, 0.3], desc: "Solvency cushion" }
+          ]},
+          { title: "Step 2: Pipeline Moat", metrics: [
+            { k: "rnd", n: "R&D Spend (% of Sales)", d: "u", c: [3, 5, 8], desc: "Complex generic reinvestment" }
+          ]},
+          { title: "Step 3: Quality of Return", metrics: [
+            { k: "roe", n: "ROE (%)", d: "u", c: [12, 16, 20], desc: "Return to shareholders" },
+            { k: "ebitda", n: "EBITDA Margin (%)", d: "u", c: [15, 20, 25], desc: "Core operating profitability" }
+          ]},
+          { title: "Step 5: Margin Durability", metrics: [
+            { k: "gm", n: "Gross Margin (%)", d: "u", c: [55, 60, 65], desc: "Gross margin buffer" },
+            { k: "perosion", n: "US Price Erosion (%)", d: "d", c: [10, 5, 2], desc: "US generic business deflation" }
+          ]},
+          { title: "Step 6 & 7: Cash & Growth", metrics: [
+            { k: "wcd", n: "Working Capital Days", d: "d", c: [120, 90, 60], desc: "Supply chain working capital" },
+            { k: "revg", n: "Revenue Growth (%)", d: "u", c: [5, 10, 15], desc: "YoY top-line growth" }
+          ]}
+        ]
+      }
+    };
+
+    let currentTab = "auto";
+    let store = { auto: [], bank: [], capgoods: [], nbfc: [], other: [], pharma: [] };
+    let sheetFetchedStocks = [];
+
+    async function checkBridgeStatus() {
+      const badge = document.getElementById("bridgeStatusIndicator");
+      const addBtn = document.getElementById("btnAddTicker");
+      try {
+        const res = await fetch("http://127.0.0.1:8000/suggest?q=ping", { signal: AbortSignal.timeout(1500) });
+        if (res.ok) {
+          isBridgeOnline = true;
+          badge.className = "bridge-status-badge status-online";
+          badge.innerText = "● Bridge Active";
+          addBtn.innerText = "+ Scrape & Add";
+          return;
+        }
+      } catch (e) {}
+
+      isBridgeOnline = false;
+      badge.className = "bridge-status-badge status-offline";
+      badge.innerText = "● Manual Entry Mode";
+      addBtn.innerText = "+ Add Ticker";
+    }
+
+    function rateMetric(metricCfg, val) {
+      if (val === undefined || val === null || val === "" || isNaN(val)) return -1;
+      const x = parseFloat(val);
+      const [c0, c1, c2] = metricCfg.c;
+      if (metricCfg.d === "u") return x < c0 ? 0 : (x < c1 ? 1 : (x < c2 ? 2 : 3));
+      else return x > c0 ? 0 : (x > c1 ? 1 : (x > c2 ? 2 : 3));
+    }
+
+    function getAllMetrics(cfg) {
+      let list = [];
+      cfg.phases.forEach(p => { list = list.concat(p.metrics); });
+      return list;
+    }
+
+    // Direct mapping to Excel column names as verified from Finance Fundamentals.xlsx
+    function extractMetricValue(vObj, metricKey) {
+      if (!vObj) return undefined;
+      if (vObj[metricKey] !== undefined) return vObj[metricKey];
+      if (vObj[metricKey.toUpperCase()] !== undefined) return vObj[metricKey.toUpperCase()];
+
+      const aliases = {
+        "roa": ["ROA (%)", "ROA", "roa"],
+        "roe": ["ROE (%)", "ROE", "roe"],
+        "gnpa": ["Gross NPA (%)", "Gross NPA", "gnpa"],
+        "nnpa": ["Net NPA (%)", "Net NPA", "NNPA (%)", "NNPA", "nnpa"],
+        "gs3": ["Gross Stage 3 (%)", "Gross Stage 3", "gs3"],
+        "ns3": ["Net Stage 3 (%)", "Net Stage 3", "ns3"],
+        "pcr": ["PCR (%)", "Stage 3 Coverage (%)", "Stage 3 Coverage PCR (%)", "pcr"],
+        "cc": ["Credit Cost (%)", "Credit Cost", "cc"],
+        "lg": ["Loan Growth (%)", "Advances Growth (%)", "Credit Growth (%)", "Loan Growth", "lg"],
+        "dg": ["Deposit Growth (%)", "Deposits Growth (%)", "Deposit Growth", "dg"],
+        "casa": ["CASA Ratio (%)", "CASA (%)", "CASA Ratio", "CASA", "casa"],
+        "nim": ["NIM (%)", "NIM / Spread (%)", "NIM", "nim"],
+        "car": ["CRAR (%)", "Capital Adequacy CRAR (%)", "CRAR", "car"],
+        "cet1": ["CET1 (%)", "CET 1 (%)", "CET-1 (%)", "CET1 Ratio (%)", "CET 1", "cet1"],
+        "ci": ["Cost-to-Income (%)", "Cost to Income (%)", "ci"],
+        "de": ["Debt to Equity (x)", "Debt to Equity", "de"],
+        "aum": ["AUM Growth (%)", "AUM Growth", "aum"],
+        "roce": ["ROCE (%)", "ROCE", "roce"],
+        "ebitda": ["EBITDA (%)", "EBITDA Margin (%)", "ebitda"],
+        "revg": ["Rev Growth (%)", "Revenue Growth (%)", "revg"],
+        "volg": ["Vol Growth (%)", "Volume Growth (%)", "volg"],
+        "rm": ["RM Cost (%)", "RM Cost (% of Sales)", "rm"],
+        "nde": ["Net Debt/EBITDA", "Net Debt / EBITDA (x)", "Net Debt / EBITDA", "nde"],
+        "wcd": ["WC Days", "Working Capital Days", "wcd"],
+        "disc": ["Discount (%)", "Discount (% of ASP)", "disc"],
+        "evmix": ["EV Mix (%)", "EV Mix", "evmix"],
+        "gm": ["Gross Margin (%)", "Gross Margin", "gm"],
+        "rnd": ["R&D (%)", "R&D Spend (% of Sales)", "rnd"],
+        "perosion": ["US Erosion (%)", "US Price Erosion (%)", "perosion"],
+        "obs": ["OB / Sales (x)", "OB / Sales", "obs"],
+        "oig": ["Inflow Growth (%)", "Inflow Growth", "oig"],
+        "recd": ["Receivable Days", "recd"],
+        "pe": ["P/E (x)", "P/E", "pe"],
+        "pb": ["P/B (x)", "P/B", "pb"]
+      };
+
+      const keyAliases = aliases[metricKey] || [];
+      for (let i = 0; i < keyAliases.length; i++) {
+        if (vObj[keyAliases[i]] !== undefined) return vObj[keyAliases[i]];
+      }
+
+      const cleanTarget = metricKey.toLowerCase().replace(/[^a-z0-9]/g, "");
+      for (const k in vObj) {
+        if (k.toLowerCase().replace(/[^a-z0-9]/g, "") === cleanTarget) {
+          return vObj[k];
+        }
+      }
+      return undefined;
+    }
+
+    function computeStockHealth(secCfg, stock) {
+      const allMetrics = getAllMetrics(secCfg);
+      let filledCount = 0;
+      let totalPts = 0;
+      let poorCount = 0;
+
+      allMetrics.forEach(m => {
+        const val = extractMetricValue(stock.v, m.k);
+        const r = rateMetric(m, val);
+        if (r >= 0) {
+          filledCount++;
+          totalPts += r;
+          if (r === 0) poorCount++;
+        }
+      });
+
+      const score = filledCount > 0 ? Math.round((totalPts / (3 * filledCount)) * 100) : null;
+      let verdict = "";
+      let verdictClass = "";
+
+      if (filledCount < Math.ceil(allMetrics.length * 0.4)) { verdict = "Fill more rows"; verdictClass = "vd-fill"; }
+      else if (score >= 75) { verdict = "Strong"; verdictClass = "vd-strong"; }
+      else if (score >= 55) { verdict = "Decent"; verdictClass = "vd-decent"; }
+      else if (score >= 35) { verdict = "Mixed"; verdictClass = "vd-mixed"; }
+      else { verdict = "Weak"; verdictClass = "vd-weak"; }
+
+      return { score, filledCount, totalRows: allMetrics.length, poorCount, verdict, verdictClass };
+    }
+
+    // Live Cloud Sync on Tab Switch: Always fetches fresh data directly from Google Sheets
+    async function switchTab(targetTab) {
+      if (!SECTORS[targetTab]) return;
+      currentTab = targetTab;
+      document.querySelectorAll(".sector-nav .btn-tab").forEach(b => {
+        if (b.getAttribute("data-tab") === targetTab) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+
+      renderLoading();
+      await loadActiveStocksFromCloud(currentTab);
+    }
+
+    function updateMetricValue(stockIdx, metricKey, newVal) {
+      const list = store[currentTab];
+      if (!list || !list[stockIdx]) return;
+      if (!list[stockIdx].v) list[stockIdx].v = {};
+      
+      const num = cleanNum(newVal);
+      list[stockIdx].v[metricKey] = num !== null ? num : newVal;
+      renderTable();
+    }
+
+    function cleanNum(valStr) {
+      if (!valStr && valStr !== 0) return null;
+      const match = String(valStr).replace(",", "").replace("%", "").match(/[-+]?\d*\.?\d+/);
+      return match ? parseFloat(match[0]) : null;
+    }
+
+    function renderLoading() {
+      const cfg = SECTORS[currentTab];
+      document.getElementById("appTitle").innerText = cfg.title;
+      document.getElementById("headerRow").innerHTML = '<th class="metric-col">Metric & Definition</th><th>Status</th>';
+      document.getElementById("matrixBody").innerHTML = `
+        <tr>
+          <td colspan="2" style="text-align: center; padding: 36px 16px; color: var(--accent-blue); font-size: 13px; font-weight: 600;">
+            ⏳ Fetching active stocks from Google Sheets (${cfg.sheetTab})...
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderTable() {
+      const cfg = SECTORS[currentTab];
+      const list = store[currentTab] || [];
+
+      document.getElementById("appTitle").innerText = cfg.title;
+
+      const headerRow = document.getElementById("headerRow");
+      const tbody = document.getElementById("matrixBody");
+
+      if (list.length === 0) {
+        headerRow.innerHTML = '<th class="metric-col">Metric & Definition</th><th>Status</th>';
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="2" style="text-align: center; padding: 36px 16px; color: var(--text-dim); font-size: 12px;">
+              No active stocks loaded in ${cfg.title.split(" ")[0]}. Click <strong>Load from Sheet</strong>.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      list.forEach(s => { s.health = computeStockHealth(cfg, s); });
+      list.sort((a, b) => (b.health.score || 0) - (a.health.score || 0));
+
+      headerRow.innerHTML = '<th class="metric-col">Analytical Phase & Metric</th>';
+      list.forEach((s, idx) => {
+        const rankClass = idx === 0 ? "rank-first" : "";
+        const rankLabel = idx === 0 ? "#1 LEADER" : `#${idx + 1}`;
+        const hasDistinctName = s.company_name && s.company_name.toUpperCase() !== s.name.toUpperCase();
+        const subNameHtml = hasDistinctName 
+          ? `<span class="stock-fullname" title="${s.company_name}">${s.company_name}</span>` 
+          : '';
+
+        const th = document.createElement("th");
+        th.className = "stock-col";
+        th.innerHTML = `
+          <div class="stock-header-wrap">
+            <div class="stock-meta">
+              <span class="rank-tag ${rankClass}">${rankLabel}</span>
+              <div>
+                <span class="stock-symbol">${s.name}</span>
+                ${subNameHtml}
+                <span class="stock-period">${s.period || ""}</span>
+              </div>
+            </div>
+            <button class="btn-remove" onclick="removeStock(${idx})">&times;</button>
+          </div>
+        `;
+        headerRow.appendChild(th);
+      });
+
+      tbody.innerHTML = "";
+
+      const scoreRow = document.createElement("tr");
+      scoreRow.className = "summary-row";
+      scoreRow.innerHTML = `<td class="metric-col"><strong>Overall Score & Verdict</strong><div class="metric-desc">Checklist Composite (0-100)</div></td>`;
+      list.forEach(s => {
+        scoreRow.innerHTML += `
+          <td class="stock-col">
+            <div class="score-badge">${s.health.score !== null ? s.health.score + ' / 100' : '-'}</div>
+            <div class="verdict-tag ${s.health.verdictClass}">${s.health.verdict} (${s.health.poorCount} Poor)</div>
+          </td>
+        `;
+      });
+      tbody.appendChild(scoreRow);
+
+      cfg.phases.forEach(phase => {
+        const catRow = document.createElement("tr");
+        catRow.className = "category-row";
+        catRow.innerHTML = `<td colspan="${list.length + 1}">${phase.title}</td>`;
+        tbody.appendChild(catRow);
+
+        phase.metrics.forEach(m => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="metric-col">
+              ${m.n}
+              <div class="metric-desc">${m.desc}</div>
+            </td>
+          `;
+
+          list.forEach((s, sIdx) => {
+            const val = extractMetricValue(s.v, m.k);
+            const displayVal = (val !== undefined && val !== null && val !== "") ? val : "";
+            const r = rateMetric(m, val);
+            const pill = r >= 0 ? `<span class="badge-r ${RATING_CLASSES[r]}">${RATING_NAMES[r]}</span>` : "";
+
+            tr.innerHTML += `
+              <td class="stock-col">
+                <div class="cell-value-wrap">
+                  <input type="text" class="cell-value-input" value="${displayVal}" placeholder="-" 
+                    onchange="updateMetricValue(${sIdx}, '${m.k}', this.value)">
+                  ${pill}
+                </div>
+              </td>
+            `;
+          });
+          tbody.appendChild(tr);
+        });
+      });
+
+      // Step 8: Valuation Multiple Row
+      const valCatRow = document.createElement("tr");
+      valCatRow.className = "category-row";
+      valCatRow.innerHTML = `<td colspan="${list.length + 1}">Step 8: Valuation Multiples & Implied Yield</td>`;
+      tbody.appendChild(valCatRow);
+
+      const valRow = document.createElement("tr");
+      valRow.innerHTML = `<td class="metric-col">${cfg.valName}<div class="metric-desc">Market Multiple</div></td>`;
+      list.forEach((s, sIdx) => {
+        let val = extractMetricValue(s.v, cfg.val);
+        if (val === undefined || (typeof val === "string" && /[a-zA-Z]/.test(val) && !/^\d+(\.\d+)?%?$/.test(val.trim()))) {
+          val = "";
+        }
+        valRow.innerHTML += `
+          <td class="stock-col">
+            <div class="cell-value-wrap">
+              <input type="text" class="cell-value-input" value="${val}" placeholder="-" 
+                onchange="updateMetricValue(${sIdx}, '${cfg.val}', this.value)">
+            </div>
+          </td>
+        `;
+      });
+      tbody.appendChild(valRow);
+
+      if (cfg.val === "pb") {
+        const eyRow = document.createElement("tr");
+        eyRow.innerHTML = `<td class="metric-col">Implied Earnings Yield (%)<div class="metric-desc">ROE &divide; P/B</div></td>`;
+        list.forEach(s => {
+          const roe = s.v ? parseFloat(extractMetricValue(s.v, "roe")) : NaN;
+          const pb = s.v ? parseFloat(extractMetricValue(s.v, "pb")) : NaN;
+          const ey = (!isNaN(roe) && !isNaN(pb) && pb > 0) ? (roe / pb).toFixed(1) + "%" : "-";
+          eyRow.innerHTML += `<td class="stock-col"><div class="cell-value-wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">${ey}</span></div></td>`;
+        });
+        tbody.appendChild(eyRow);
+      }
+    }
+
+    document.querySelectorAll(".sector-nav .btn-tab").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+    });
+
+    async function removeStock(idx) {
+      const stockToRemove = store[currentTab][idx];
+      store[currentTab].splice(idx, 1);
+      renderTable();
+
+      if (stockToRemove) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST", mode: "no-cors", credentials: "omit",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify({
+              tab: SECTORS[currentTab].sheetTab,
+              action: "update_active",
+              updates: [{ name: stockToRemove.name, active: 0 }]
+            })
+          });
+        } catch (e) {}
+      }
+    }
+
+    document.getElementById("btnClearCurrent").addEventListener("click", async () => {
+      const cfg = SECTORS[currentTab];
+      if (!store[currentTab] || store[currentTab].length === 0) return;
+      if (confirm(`Hide all stocks in ${cfg.title}? (All rows remain safely stored in Google Sheet with Active = 0)`)) {
+        store[currentTab] = [];
+        renderTable();
+
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST", mode: "no-cors", credentials: "omit",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify({ tab: cfg.sheetTab, action: "clear_sector" })
+          });
+        } catch (e) {}
+      }
+    });
+
+    const tickerInput = document.getElementById("tickerInput");
+    const dropdown = document.getElementById("autocompleteDropdown");
+    let debounceTimer = null;
+
+    tickerInput.addEventListener("input", (e) => {
+      if (!isBridgeOnline) return;
+      const val = e.target.value.trim();
+      clearTimeout(debounceTimer);
+
+      if (val.length < 3) {
+        dropdown.style.display = "none";
+        return;
+      }
+
+      debounceTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(`http://127.0.0.1:8000/suggest?q=${encodeURIComponent(val)}`);
+          if (!res.ok) return;
+          const items = await res.json();
+          if (!items || items.length === 0) { dropdown.style.display = "none"; return; }
+
+          dropdown.innerHTML = "";
+          items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "autocomplete-item";
+            div.innerHTML = `<span>${item.name}</span><span class="autocomplete-symbol">${item.symbol}</span>`;
+            div.addEventListener("click", () => {
+              dropdown.style.display = "none";
+              tickerInput.value = "";
+              handleAddAction(item.symbol);
+            });
+            dropdown.appendChild(div);
+          });
+          dropdown.style.display = "block";
+        } catch (err) { dropdown.style.display = "none"; }
+      }, 150);
+    });
+
+    async function handleAddAction(sym) {
+      sym = (sym || tickerInput.value).trim().toUpperCase();
+      if (!sym) return;
+
+      const period = document.getElementById("periodInput").value || "Q1 FY27";
+
+      if (isBridgeOnline) {
+        try {
+          const res = await fetch(`http://127.0.0.1:8000/fetch?symbol=${encodeURIComponent(sym)}`);
+          if (!res.ok) throw new Error("Scrape failed");
+          const json = await res.json();
+          
+          const resolvedSymbol = json.symbol;
+          const detectedSector = json.detected_sector || "other";
+          
+          if (currentTab !== detectedSector) switchTab(detectedSector);
+
+          store[detectedSector] = (store[detectedSector] || []).filter(s => s.name !== resolvedSymbol);
+          store[detectedSector].push({
+            name: resolvedSymbol,
+            company_name: json.company_name || resolvedSymbol,
+            period: period,
+            v: json.v || {}
+          });
+
+          renderTable();
+          tickerInput.value = "";
+          return;
+        } catch (err) {
+          console.warn("Bridge fetch failed, creating manual ticker:", err);
+        }
+      }
+
+      store[currentTab] = (store[currentTab] || []).filter(s => s.name !== sym);
+      store[currentTab].push({
+        name: sym,
+        company_name: sym,
+        period: period,
+        v: {}
+      });
+
+      renderTable();
+      tickerInput.value = "";
+    }
+
+    document.getElementById("btnAddTicker").addEventListener("click", () => handleAddAction());
+    tickerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        dropdown.style.display = "none";
+        handleAddAction();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-input-group")) dropdown.style.display = "none";
+    });
+
+    // Robust JSONP fallback loader for Google Apps Script to eliminate CORS failures
+    function fetchSheetJSONP(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = "jsonp_callback_" + Math.round(100000 * Math.random());
+        const script = document.createElement("script");
+        const separator = url.indexOf("?") >= 0 ? "&" : "?";
+        
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          try { document.body.removeChild(script); } catch (e) {}
+          resolve(data);
+        };
+
+        script.onerror = function() {
+          delete window[callbackName];
+          try { document.body.removeChild(script); } catch (e) {}
+          fetch(url, { method: "GET", redirect: "follow" })
+            .then(r => r.json())
+            .then(resolve)
+            .catch(reject);
+        };
+
+        script.src = url + separator + "callback=" + callbackName;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function queryGoogleSheet(url) {
+      try {
+        const res = await fetch(url, { method: "GET", redirect: "follow" });
+        if (res.ok) {
+          return await res.json();
+        }
+      } catch (err) {}
+      return await fetchSheetJSONP(url);
+    }
+
+    // Modal checklist population
+    document.getElementById("btnLoadCloud").addEventListener("click", async () => {
+      const cfg = SECTORS[currentTab];
+      try {
+        const cacheBustUrl = `${GOOGLE_SCRIPT_URL}?tab=${encodeURIComponent(cfg.sheetTab)}&all=true&_t=${Date.now()}`;
+        const data = await queryGoogleSheet(cacheBustUrl);
+        if (!Array.isArray(data) || data.length === 0) {
+          alert(`No records exist in '${cfg.sheetTab}'.`);
+          return;
+        }
+        
+        sheetFetchedStocks = data;
+        const listContainer = document.getElementById("stockListContainer");
+        listContainer.innerHTML = "";
+        document.getElementById("modalCounter").innerText = `${sheetFetchedStocks.length} records in sheet`;
+
+        sheetFetchedStocks.forEach((item, idx) => {
+          const row = document.createElement("label");
+          row.className = "stock-item-row";
+          const isChecked = item.active === 1 ? "checked" : "";
+          row.innerHTML = `
+            <input type="checkbox" class="stock-checkbox" data-idx="${idx}" ${isChecked}>
+            <span class="stock-symbol">${item.name}</span>
+            <span class="stock-fullname" style="margin-left:8px; font-size:10px; color:var(--text-muted);">${item.company_name || ""}</span>
+            <span class="stock-period" style="margin-left:auto;">${item.period || ""}</span>
+          `;
+          listContainer.appendChild(row);
+        });
+
+        document.getElementById("stockModal").style.display = "flex";
+      } catch (err) { alert("Could not load from Google Sheets: " + err); }
+    });
+
+    document.getElementById("btnSelectAll").addEventListener("click", () => {
+      document.querySelectorAll(".stock-checkbox").forEach(cb => cb.checked = true);
+    });
+
+    document.getElementById("btnDeselectAll").addEventListener("click", () => {
+      document.querySelectorAll(".stock-checkbox").forEach(cb => cb.checked = false);
+    });
+
+    document.getElementById("btnModalCancel").addEventListener("click", () => { document.getElementById("stockModal").style.display = "none"; });
+    document.getElementById("btnModalClose").addEventListener("click", () => { document.getElementById("stockModal").style.display = "none"; });
+
+    // When clicking "Import Selected", commit flags to cloud and render immediately
+    document.getElementById("btnModalImport").addEventListener("click", async () => {
+      const cfg = SECTORS[currentTab];
+      const updates = [];
+      const activeForDashboard = [];
+      const importBtn = document.getElementById("btnModalImport");
+
+      importBtn.disabled = true;
+      importBtn.innerText = "Updating Cloud...";
+
+      document.querySelectorAll(".stock-checkbox").forEach(cb => {
+        const idx = Number(cb.getAttribute("data-idx"));
+        const stock = sheetFetchedStocks[idx];
+        const isActive = cb.checked ? 1 : 0;
+        
+        updates.push({ name: stock.name, active: isActive });
+
+        stock.active = isActive;
+        if (isActive === 1) {
+          activeForDashboard.push(stock);
+        }
+      });
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          credentials: "omit",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            tab: cfg.sheetTab,
+            action: "update_active",
+            updates: updates
+          })
+        });
+      } catch (err) {
+        console.warn("Could not sync active flags to Google Sheet:", err);
+      }
+
+      store[currentTab] = activeForDashboard;
+      renderTable();
+
+      importBtn.disabled = false;
+      importBtn.innerText = "Import Selected";
+      document.getElementById("stockModal").style.display = "none";
+    });
+
+    document.getElementById("btnSaveCloud").addEventListener("click", async () => {
+      const cfg = SECTORS[currentTab];
+      const list = store[currentTab];
+      if (!list || list.length === 0) return alert("No active stocks to save.");
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST", mode: "no-cors", credentials: "omit",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            tab: cfg.sheetTab,
+            action: "save",
+            period: document.getElementById("periodInput").value || "Q1 FY27",
+            stocks: list
+          })
+        });
+        alert(`Saved successfully to '${cfg.sheetTab}' with Active = 1!`);
+      } catch (e) { alert("Save failed: " + e); }
+    });
+
+    // Cloud fetch for active sector tab (Always fresh, no stale cache)
+    async function loadActiveStocksFromCloud(tabKey) {
+      const cfg = SECTORS[tabKey];
+      try {
+        const cacheBustUrl = `${GOOGLE_SCRIPT_URL}?tab=${encodeURIComponent(cfg.sheetTab)}&_t=${Date.now()}`;
+        const data = await queryGoogleSheet(cacheBustUrl);
+        if (Array.isArray(data)) {
+          store[tabKey] = data;
+        }
+      } catch (e) {
+        console.warn(`Could not auto-fetch ${cfg.sheetTab}:`, e);
+      }
+      renderTable();
+    }
+
+    const themeBtn = document.getElementById("btnThemeToggle");
+    themeBtn.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("sect_matrix_theme", next);
+      themeBtn.innerHTML = next === "light" ? "🌙 Dark Mode" : "☀️ Light Mode";
+    });
+
+    // Initial sequence on launch: Live Cloud Sync
+    renderLoading();
+    checkBridgeStatus();
+    loadActiveStocksFromCloud(currentTab);
+  </script>
+</body>
+</html>
