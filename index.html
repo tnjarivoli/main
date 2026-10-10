@@ -1,541 +1,991 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stock Research & Investment Hub</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-              900: '#1e1b4b',
-            },
-            surface: {
-              dark: '#0f172a',
-              card: '#1e293b',
-              border: '#334155'
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Inter Font -->
+  <title>Stock Analysis & Research Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    
-    .card-glow:hover {
-      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25), 0 8px 10px -6px rgba(99, 102, 241, 0.2);
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-surface: #111827;
+      --bg-card: #162032;
+      --bg-card-hover: #1c2942;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(56, 189, 248, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+      --accent-blue: #38bdf8;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-violet: #8b5cf6;
+      --accent-rose: #f43f5e;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-highlight: rgba(2, 132, 199, 0.4);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #94a3b8;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    ::-webkit-scrollbar-thumb {
-      background: #475569;
-      border-radius: 4px;
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      line-height: 1.5;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #64748b;
+
+    .glow-bg {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(139, 92, 246, 0.04) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background-color: rgba(10, 14, 23, 0.75);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 2rem;
+      transition: background-color 0.3s ease;
+    }
+
+    [data-theme="light"] header {
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.35);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 3rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.95rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 9999px;
+      color: var(--accent-blue);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero h2 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #f8fafc, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    [data-theme="light"] .hero h2 {
+      background: linear-gradient(to right, #0f172a, #334155);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .controls-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.85rem 1rem 0.85rem 2.85rem;
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-sub);
+      pointer-events: none;
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chip-btn {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.55rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .chip-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-highlight);
+    }
+
+    .chip-btn.active {
+      background: var(--accent-blue);
+      color: #0b1120;
+      border-color: var(--accent-blue);
+      font-weight: 700;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-highlight);
+      background: var(--bg-card-hover);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .card-badge {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 0.65rem;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] .tag {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--accent-blue);
+      color: #0b1120;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.75rem 0.95rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-highlight);
+    }
+
+    /* Modal Live Preview */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 1300px;
+      height: 90vh;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .modal-url {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      text-decoration: none;
+    }
+
+    .modal-url:hover {
+      color: var(--accent-blue);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .modal-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .modal-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-body {
+      flex: 1;
+      position: relative;
+      background: #0b0f19;
+    }
+
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Color themes */
+    .card-theme-blue .card-icon {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+    }
+    .card-theme-blue .card-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+    }
+
+    .card-theme-cyan .card-icon {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+    }
+    .card-theme-cyan .card-badge {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+    }
+
+    .card-theme-emerald .card-icon {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+    .card-theme-emerald .card-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .card-theme-violet .card-icon {
+      background: rgba(139, 92, 246, 0.15);
+      color: #8b5cf6;
+    }
+    .card-theme-violet .card-badge {
+      background: rgba(139, 92, 246, 0.15);
+      color: #8b5cf6;
+    }
+
+    .card-theme-amber .card-icon {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+    .card-theme-amber .card-badge {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+
+    .card-theme-rose .card-icon {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+    }
+    .card-theme-rose .card-badge {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-blue);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #1e293b;
+      border: 1px solid var(--border-highlight);
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 2.1rem;
+      }
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+      .modal-container {
+        height: 95vh;
+      }
     }
   </style>
 </head>
+<body>
+  <div class="glow-bg"></div>
 
-<body class="bg-slate-950 text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
-
-  <nav class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        
-        <!-- Brand Logo / Title -->
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilter()">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
-          </div>
-          <div>
-            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
-              AlphaDeck
-            </span>
-            <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-900/60 text-indigo-300 border border-indigo-700/50">
-              Toolkit v2.4
-            </span>
-          </div>
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="logo-badge">📈</div>
+        <div class="brand-text">
+          <h1>Stock Analysis Suite</h1>
+          <p>Investment Research & Strategy Portal</p>
         </div>
+      </a>
 
-        <!-- Search Bar and Theme Toggle -->
-        <div class="flex items-center space-x-3 sm:space-x-4">
-          <div class="relative w-40 sm:w-64">
-            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input 
-              id="search-input"
-              type="text" 
-              placeholder="Search tools, formulas..." 
-              class="w-full bg-slate-800/80 text-sm pl-9 pr-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-200 placeholder-slate-400 transition"
-              oninput="handleSearch(this.value)"
-            />
-          </div>
-
-          <!-- Light / Dark toggle -->
-          <button 
-            id="theme-toggle" 
-            onclick="toggleTheme()" 
-            class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition"
-            title="Toggle color theme"
-          >
-            <i id="theme-icon" data-lucide="sun" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </nav>
-
-  <header class="relative overflow-hidden py-10 sm:py-14 border-b border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.15),rgba(255,255,255,0))]"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
-        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-        Systematic Equity Research Suite
-      </div>
-      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white mb-4">
-        Investment Research <span class="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Portal</span>
-      </h1>
-      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-400">
-        Access step-by-step valuation frameworks, formula sheets, CANSLIM breakout systems, sector rotations, and portfolio allocation trackers in one unified workspace.
-      </p>
-
-      <!-- Category quick filters -->
-      <div class="mt-7 flex flex-wrap items-center justify-center gap-2" id="filter-chips">
-        <button onclick="filterCategory('all')" class="chip active-chip px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-600 text-white transition shadow-sm" data-category="all">
-          All Modules (5)
-        </button>
-        <button onclick="filterCategory('fundamentals')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="fundamentals">
-          Fundamentals & Formulas
-        </button>
-        <button onclick="filterCategory('strategy')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="strategy">
-          CANSLIM & Sector Playbook
-        </button>
-        <button onclick="filterCategory('portfolio')" class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-category="portfolio">
-          Portfolio Tracking
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle Theme">
+          <span id="themeIcon">☀️</span>
+          <span id="themeText">Theme</span>
         </button>
       </div>
     </div>
   </header>
 
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div id="no-results" class="hidden text-center py-16">
-      <i data-lucide="search-x" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
-      <h3 class="text-lg font-semibold text-slate-300">No matching tools found</h3>
-      <p class="text-sm text-slate-500 mt-1">Try another keyword or reset the filter.</p>
-      <button onclick="resetFilter()" class="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-lg transition">Clear Search</button>
+  <main>
+    <section class="hero">
+      <div class="hero-badge">Centralized Research Hub</div>
+      <h2>Strategic Market Intelligence</h2>
+      <p>Access step-by-step valuation guides, technical playbooks, quantitative formulas, sector-level scoring, portfolio management, and growth stock scorecards.</p>
+    </section>
+
+    <div class="controls-wrapper">
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Filter by tool name, strategy, or formula..." />
+      </div>
+
+      <div class="category-chips" id="filterChips">
+        <button class="chip-btn active" data-category="all">All Tools (6)</button>
+        <button class="chip-btn" data-category="fundamental">Fundamental</button>
+        <button class="chip-btn" data-category="strategy">Strategy & Momentum</button>
+        <button class="chip-btn" data-category="tracking">Tracking & Valuation</button>
+      </div>
     </div>
 
-    <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Cards will be populated by JavaScript -->
+    <div class="grid-container" id="toolsGrid">
+      <!-- Card 1: Stock Analysis Step-by-Step -->
+      <article class="card card-theme-blue" data-category="fundamental" data-keywords="quality growth reasonable valuation step by step guide screening intrinsic peg roe">
+        <div class="card-top">
+          <div class="card-icon">💎</div>
+          <span class="card-badge">Valuation & Quality</span>
+        </div>
+        <h3 class="card-title">Quality + Growth + Reasonable Valuation</h3>
+        <p class="card-desc">Step-by-step fundamental framework to identify high-quality compounders trading at justifiable valuations, balancing capital safety and capital appreciation.</p>
+        <div class="tags">
+          <span class="tag">#GARP</span>
+          <span class="tag">#QualityScores</span>
+          <span class="tag">#DCF/Multiples</span>
+          <span class="tag">#Checklist</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/stockanalysis.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/stockanalysis.html', 'Quality + Growth + Reasonable Valuation: Step-by-Step Guide')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 2: Growth Stock Analysis (NEW) -->
+      <article class="card card-theme-cyan" data-category="fundamental" data-keywords="growth stock analysis scorecard quarterly results eps revenue momentum screener 70 30 quality">
+        <div class="card-top">
+          <div class="card-icon">🚀</div>
+          <span class="card-badge">Growth & Momentum</span>
+        </div>
+        <h3 class="card-title">Growth Stock Analysis</h3>
+        <p class="card-desc">Growth (70) + Quality (30) scorecard and quarterly earnings analyzer. Evaluate high-growth candidates, breakout quarters, and back-to-back EPS peaks with automated metric tracking[cite: 1].</p>
+        <div class="tags">
+          <span class="tag">#GrowthScorecard</span>
+          <span class="tag">#QuarterlyTrends</span>
+          <span class="tag">#EPSBreakouts</span>
+          <span class="tag">#70/30Model</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/growthanalysis.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/growthanalysis.html', 'Growth Stock Analysis')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 3: Stock Analysis Formulas -->
+      <article class="card card-theme-violet" data-category="tracking" data-keywords="stock analysis formulas equations financial ratios pe peg roe roce fcf wacc ev ebitda mathematics">
+        <div class="card-top">
+          <div class="card-icon">🧮</div>
+          <span class="card-badge">Quant & Formulas</span>
+        </div>
+        <h3 class="card-title">Stock Analysis Formulas</h3>
+        <p class="card-desc">Interactive cheat-sheet and formula references for valuation ratios, profitability, efficiency, and solvency metrics needed for rigorous fundamental analysis.</p>
+        <div class="tags">
+          <span class="tag">#Formulas</span>
+          <span class="tag">#Ratios</span>
+          <span class="tag">#DCFMath</span>
+          <span class="tag">#Metrics</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/formulas.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/formulas.html', 'Stock Analysis Formulas')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 4: Sector Analysis and Stockwise Rating -->
+      <article class="card card-theme-amber" data-category="fundamental" data-keywords="sector analysis stockwise rating industry peer comparison industry ranks benchmark relative strength">
+        <div class="card-top">
+          <div class="card-icon">📊</div>
+          <span class="card-badge">Sector Comparison</span>
+        </div>
+        <h3 class="card-title">Sector Analysis & Stockwise Rating</h3>
+        <p class="card-desc">Macro industry analysis and peer-comparison matrices to evaluate sector leadership, tailwinds, industry metrics, and individual stock rankings within sectors.</p>
+        <div class="tags">
+          <span class="tag">#SectorTrends</span>
+          <span class="tag">#PeerRanking</span>
+          <span class="tag">#IndustryPeers</span>
+          <span class="tag">#LeaderVsLaggard</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/sectoranalysis.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/sectoranalysis.html', 'Sector Analysis and Stockwise Rating')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 5: Canslim-Minervini Playbook -->
+      <article class="card card-theme-rose" data-category="strategy" data-keywords="canslim minervini playbook momentum vcp trend template cup with handle pivot breakout stage analysis">
+        <div class="card-top">
+          <div class="card-icon">⚡</div>
+          <span class="card-badge">Momentum Playbook</span>
+        </div>
+        <h3 class="card-title">CANSLIM - Minervini Playbook</h3>
+        <p class="card-desc">Systematic momentum trading guidelines combining William O'Neil's CANSLIM criteria and Mark Minervini's Volatility Contraction Pattern (VCP) and Trend Template.</p>
+        <div class="tags">
+          <span class="tag">#CANSLIM</span>
+          <span class="tag">#MinerviniVCP</span>
+          <span class="tag">#TrendTemplate</span>
+          <span class="tag">#Breakouts</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/playbook.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/playbook.html', 'Canslim-Minervini Playbook')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 6: Stock Portfolio -->
+      <article class="card card-theme-emerald" data-category="tracking" data-keywords="stock portfolio tracker allocation risk weightage pnl performance holdings watchlists">
+        <div class="card-top">
+          <div class="card-icon">💼</div>
+          <span class="card-badge">Portfolio Tracker</span>
+        </div>
+        <h3 class="card-title">Stock Portfolio</h3>
+        <p class="card-desc">Interactive portfolio dashboard to track allocations, position sizing, risk exposure, sector concentration, and continuous performance tracking.</p>
+        <div class="tags">
+          <span class="tag">#PortfolioManagement</span>
+          <span class="tag">#PositionSizing</span>
+          <span class="tag">#RiskAllocation</span>
+          <span class="tag">#Holdings</span>
+        </div>
+        <div class="card-actions">
+          <a href="https://tnjarivoli.github.io/main/portfolio.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            <span>Launch Tool</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button class="btn-secondary" title="Preview Inside Modal" onclick="openPreview('https://tnjarivoli.github.io/main/portfolio.html', 'Stock Portfolio')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </article>
     </div>
   </main>
 
-  <div id="preview-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex-col">
-    <!-- Modal Header Bar -->
-    <div class="h-14 border-b border-slate-800 bg-slate-900/90 px-4 flex items-center justify-between">
-      <div class="flex items-center space-x-3 overflow-hidden">
-        <span id="modal-tool-icon" class="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-400">
-          <i data-lucide="external-link" class="w-4 h-4"></i>
-        </span>
-        <div class="truncate">
-          <h2 id="modal-title" class="text-sm font-semibold text-white truncate">Tool Preview</h2>
-          <p id="modal-url" class="text-xs text-slate-400 truncate font-mono">about:blank</p>
+  <!-- Live Modal Preview Box -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <span class="modal-title" id="modalTitle">Tool Preview</span>
+          <a id="modalExternalLink" href="#" target="_blank" class="modal-url" title="Open in new window">Open externally ↗</a>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn" onclick="copyCurrentModalUrl()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy URL
+          </button>
+          <button class="modal-btn" onclick="closePreview()">✕ Close</button>
         </div>
       </div>
-
-      <div class="flex items-center space-x-2">
-        <button 
-          id="modal-open-external" 
-          onclick="openModalExternal()" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition"
-          title="Open in new window"
-        >
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          <span class="hidden sm:inline">New Tab</span>
-        </button>
-
-        <button 
-          onclick="reloadIframe()" 
-          class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-          title="Reload Preview"
-        >
-          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-        </button>
-
-        <button 
-          onclick="closeModal()" 
-          class="p-2 rounded-lg bg-rose-900/30 hover:bg-rose-900/50 text-rose-300 border border-rose-800/40 transition"
-          title="Close Modal"
-        >
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
+      <div class="modal-body">
+        <iframe id="previewIframe" class="modal-iframe" src="" loading="lazy"></iframe>
       </div>
-    </div>
-
-    <!-- Iframe Container -->
-    <div class="relative flex-1 w-full bg-slate-950 overflow-hidden">
-      <!-- Loading indicator -->
-      <div id="iframe-spinner" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-slate-400 z-10">
-        <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-        <span class="text-xs tracking-wider uppercase">Loading Resource...</span>
-      </div>
-      
-      <iframe 
-        id="preview-iframe" 
-        src="about:blank" 
-        class="w-full h-full border-0" 
-        onload="document.getElementById('iframe-spinner').classList.add('hidden')"
-      ></iframe>
     </div>
   </div>
 
-  <footer class="border-t border-slate-800 bg-slate-900/50 py-8 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-      <div class="flex items-center gap-2">
-        <i data-lucide="compass" class="w-4 h-4 text-indigo-400"></i>
-        <span>Curated Stock Analysis Hub & Playbooks</span>
-      </div>
-      <div class="flex items-center space-x-6">
-        <a href="https://github.com/tnjarivoli" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition flex items-center gap-1">
-          <i data-lucide="github" class="w-3.5 h-3.5"></i>
-          tnjarivoli
-        </a>
-        <span>Direct GitHub Pages Host</span>
-      </div>
+  <div class="toast" id="toastNotice">URL copied to clipboard!</div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://tnjarivoli.github.io/main/stockanalysis.html" target="_blank">Stock Analysis</a>
+      <a href="https://tnjarivoli.github.io/main/growthanalysis.html" target="_blank">Growth Analysis</a>
+      <a href="https://tnjarivoli.github.io/main/formulas.html" target="_blank">Formulas</a>
+      <a href="https://tnjarivoli.github.io/main/sectoranalysis.html" target="_blank">Sector Analysis</a>
+      <a href="https://tnjarivoli.github.io/main/playbook.html" target="_blank">Playbook</a>
+      <a href="https://tnjarivoli.github.io/main/portfolio.html" target="_blank">Portfolio</a>
     </div>
+    <p>© 2026 Stock Analysis Suite • Investment Research & Trading Tools</p>
   </footer>
 
-  <!-- Toast notification component -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-xs font-medium shadow-xl opacity-0 translate-y-3 pointer-events-none transition duration-300">
-    <i data-lucide="check" class="w-4 h-4"></i>
-    <span id="toast-message">Copied to clipboard</span>
-  </div>
-
   <script>
-    // Definition of the 5 stock research tools
-    const TOOLS_DATA = [
-      {
-        id: "stock-analysis",
-        title: "Quality + Growth + Reasonable Valuation",
-        subtitle: "Step-by-Step Fundamental Guide",
-        description: "A structured, disciplined evaluation framework combining balance sheet moat, compound earnings growth, and entry valuation margins.",
-        category: "fundamentals",
-        url: "https://tnjarivoli.github.io/main/stockanalysis.html",
-        icon: "scale",
-        color: "from-blue-500 to-indigo-600",
-        badge: "Core Framework",
-        tags: ["ROCE / ROE", "Free Cash Flow", "PE vs Growth", "Moat Scoring"]
-      },
-      {
-        id: "formulas",
-        title: "Stock Analysis Formulas",
-        subtitle: "Valuation & Ratio Cheat Sheet",
-        description: "Comprehensive financial formulas library covering DCF, PEG, Dupont decomposition, Enterprise Value metrics, and capital efficiency formulas.",
-        category: "fundamentals",
-        url: "https://tnjarivoli.github.io/main/formulas.html",
-        icon: "binary",
-        color: "from-emerald-500 to-teal-600",
-        badge: "Reference Library",
-        tags: ["DCF Formula", "P/B & ROE", "Working Capital", "Debt Coverage"]
-      },
-      {
-        id: "sector-analysis",
-        title: "Sector Analysis & Stockwise Rating",
-        subtitle: "Relative Strength & Category Ranking",
-        description: "Industry breakdown, sector performance heatmap, and relative rating matrix to identify tailwind sectors and best-of-breed companies.",
-        category: "strategy",
-        url: "https://tnjarivoli.github.io/main/sectoranalysis.html",
-        icon: "pie-chart",
-        color: "from-violet-500 to-purple-600",
-        badge: "Macro & Sector",
-        tags: ["Sector Rotation", "Peer Matrix", "Scorecard", "Industry Cyclicals"]
-      },
-      {
-        id: "playbook",
-        title: "CANSLIM - Minervini Playbook",
-        subtitle: "Momentum & Trend Template",
-        description: "High-momentum swing & trend trading system following William O'Neil's CANSLIM criteria and Mark Minervini's Volatility Contraction Pattern (VCP).",
-        category: "strategy",
-        url: "https://tnjarivoli.github.io/main/playbook.html",
-        icon: "trending-up",
-        color: "from-amber-500 to-orange-600",
-        badge: "Momentum Alpha",
-        tags: ["CANSLIM", "Minervini VCP", "Pivot Points", "Risk-to-Reward"]
-      },
-      {
-        id: "portfolio",
-        title: "Stock Portfolio",
-        subtitle: "Holdings Tracker & Allocation",
-        description: "Portfolio management dashboard to monitor asset weighting, cash levels, sector distribution, unrealized returns, and risk exposure.",
-        category: "portfolio",
-        url: "https://tnjarivoli.github.io/main/portfolio.html",
-        icon: "briefcase",
-        color: "from-cyan-500 to-blue-600",
-        badge: "Portfolio Management",
-        tags: ["Position Sizing", "Diversification", "Risk Limits", "Performance"]
+    // Theme Toggle Handler
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function applyTheme(isLight) {
+      if (isLight) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark';
+        localStorage.setItem('hub_theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light';
+        localStorage.setItem('hub_theme', 'dark');
       }
-    ];
-
-    let currentCategory = "all";
-    let searchQuery = "";
-    let activeModalUrl = "";
-
-    function renderCards() {
-      const container = document.getElementById("cards-grid");
-      const noResults = document.getElementById("no-results");
-      container.innerHTML = "";
-
-      const filtered = TOOLS_DATA.filter(tool => {
-        const matchesCategory = currentCategory === "all" || tool.category === currentCategory;
-        const q = searchQuery.toLowerCase().trim();
-        const matchesSearch = !q || 
-          tool.title.toLowerCase().includes(q) || 
-          tool.subtitle.toLowerCase().includes(q) ||
-          tool.description.toLowerCase().includes(q) ||
-          tool.tags.some(t => t.toLowerCase().includes(q));
-
-        return matchesCategory && matchesSearch;
-      });
-
-      if (filtered.length === 0) {
-        noResults.classList.remove("hidden");
-        return;
-      }
-      noResults.classList.add("hidden");
-
-      filtered.forEach(tool => {
-        const card = document.createElement("div");
-        card.className = "card-glow bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:border-slate-700 hover:-translate-y-1 relative group";
-
-        card.innerHTML = `
-          <div>
-            <!-- Top badge row -->
-            <div class="flex items-center justify-between gap-2 mb-4">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-300">
-                ${tool.badge}
-              </span>
-              <button 
-                onclick="copyToClipboard('${tool.url}')" 
-                class="text-slate-400 hover:text-slate-200 p-1.5 rounded-md hover:bg-slate-800 transition" 
-                title="Copy direct link"
-              >
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-
-            <!-- Header icon and title -->
-            <div class="flex items-start gap-4 mb-3">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${tool.color} flex items-center justify-center shrink-0 shadow-md">
-                <i data-lucide="${tool.icon}" class="w-6 h-6 text-white"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-100 text-lg leading-tight group-hover:text-indigo-300 transition">
-                  ${tool.title}
-                </h3>
-                <p class="text-xs font-medium text-slate-400 mt-0.5">${tool.subtitle}</p>
-              </div>
-            </div>
-
-            <!-- Description -->
-            <p class="text-xs text-slate-400 leading-relaxed my-3">
-              ${tool.description}
-            </p>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-1.5 my-4">
-              ${tool.tags.map(t => `<span class="px-2 py-0.5 rounded text-[11px] bg-slate-800/80 text-slate-400 border border-slate-800 font-mono">${t}</span>`).join('')}
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="pt-4 border-t border-slate-800/80 flex items-center gap-2">
-            <button 
-              onclick="openInModal('${tool.url}', '${tool.title.replace(/'/g, "\\'")}', '${tool.icon}')" 
-              class="flex-1 py-2 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow-sm"
-            >
-              <i data-lucide="layout" class="w-3.5 h-3.5"></i>
-              Quick Preview
-            </button>
-            
-            <a 
-              href="${tool.url}" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold border border-slate-700 flex items-center justify-center gap-1.5 transition"
-              title="Open full page in new tab"
-            >
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              Open
-            </a>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-
-      lucide.createIcons();
     }
 
-    function handleSearch(val) {
-      searchQuery = val;
-      renderCards();
-    }
+    const savedTheme = localStorage.getItem('hub_theme') || 'dark';
+    applyTheme(savedTheme === 'light');
 
-    function filterCategory(cat) {
-      currentCategory = cat;
-      const chips = document.querySelectorAll(".chip");
-      chips.forEach(btn => {
-        if (btn.getAttribute("data-category") === cat) {
-          btn.className = "chip px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-600 text-white transition shadow-sm";
+    themeToggleBtn.addEventListener('click', () => {
+      const isCurrentlyLight = document.documentElement.getAttribute('data-theme') === 'light';
+      applyTheme(!isCurrentlyLight);
+    });
+
+    // Search and Filtering
+    const searchInput = document.getElementById('searchInput');
+    const chipBtns = document.querySelectorAll('.chip-btn');
+    const cards = document.querySelectorAll('.card');
+
+    let currentCategory = 'all';
+
+    function filterTools() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+        const keywords = card.getAttribute('data-keywords') || '';
+        const category = card.getAttribute('data-category');
+
+        const matchesQuery = !query || title.includes(query) || desc.includes(query) || keywords.includes(query);
+        const matchesCategory = currentCategory === 'all' || category === currentCategory;
+
+        if (matchesQuery && matchesCategory) {
+          card.style.display = 'flex';
         } else {
-          btn.className = "chip px-3 py-1.5 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition";
+          card.style.display = 'none';
         }
       });
-      renderCards();
     }
 
-    function resetFilter() {
-      document.getElementById("search-input").value = "";
-      searchQuery = "";
-      filterCategory("all");
+    searchInput.addEventListener('input', filterTools);
+
+    chipBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        chipBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-category');
+        filterTools();
+      });
+    });
+
+    // Modal Preview Mechanism
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalIframe = document.getElementById('previewIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalExternalLink = document.getElementById('modalExternalLink');
+    let activePreviewUrl = '';
+
+    function openPreview(url, title) {
+      activePreviewUrl = url;
+      modalTitle.textContent = title;
+      modalExternalLink.href = url;
+      modalIframe.src = url;
+      modalBackdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
-    function openInModal(url, title, icon) {
-      activeModalUrl = url;
-      document.getElementById("modal-title").innerText = title;
-      document.getElementById("modal-url").innerText = url;
-      
-      const iconContainer = document.getElementById("modal-tool-icon");
-      iconContainer.innerHTML = `<i data-lucide="${icon || 'layout'}" class="w-4 h-4"></i>`;
-      lucide.createIcons();
-
-      const spinner = document.getElementById("iframe-spinner");
-      spinner.classList.remove("hidden");
-
-      const iframe = document.getElementById("preview-iframe");
-      iframe.src = url;
-
-      const modal = document.getElementById("preview-modal");
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      document.body.style.overflow = "hidden";
+    function closePreview() {
+      modalBackdrop.classList.remove('active');
+      modalIframe.src = '';
+      document.body.style.overflow = '';
     }
 
-    function closeModal() {
-      const modal = document.getElementById("preview-modal");
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      const iframe = document.getElementById("preview-iframe");
-      iframe.src = "about:blank";
-      document.body.style.overflow = "auto";
-    }
-
-    function reloadIframe() {
-      const iframe = document.getElementById("preview-iframe");
-      const spinner = document.getElementById("iframe-spinner");
-      spinner.classList.remove("hidden");
-      iframe.src = activeModalUrl;
-    }
-
-    function openModalExternal() {
-      if (activeModalUrl) {
-        window.open(activeModalUrl, '_blank');
-      }
-    }
-
-    function copyToClipboard(text) {
-      const tempInput = document.createElement("input");
-      tempInput.style.position = "absolute";
-      tempInput.style.left = "-9999px";
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      try {
-        document.execCommand("copy");
-        showToast("Link copied to clipboard!");
-      } catch (err) {
-        showToast("Failed to copy link");
-      }
-      document.body.removeChild(tempInput);
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById("toast");
-      document.getElementById("toast-message").innerText = msg;
-      toast.classList.remove("opacity-0", "translate-y-3", "pointer-events-none");
-      toast.classList.add("opacity-100", "translate-y-0");
-
-      setTimeout(() => {
-        toast.classList.add("opacity-0", "translate-y-3", "pointer-events-none");
-        toast.classList.remove("opacity-100", "translate-y-0");
-      }, 2500);
-    }
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains("dark");
-      const themeIcon = document.getElementById("theme-icon");
-      
-      if (isDark) {
-        html.classList.remove("dark");
-        document.body.classList.remove("bg-slate-950", "text-slate-100");
-        document.body.classList.add("bg-slate-50", "text-slate-900");
-        themeIcon.setAttribute("data-lucide", "moon");
-      } else {
-        html.classList.add("dark");
-        document.body.classList.add("bg-slate-950", "text-slate-100");
-        document.body.classList.remove("bg-slate-50", "text-slate-900");
-        themeIcon.setAttribute("data-lucide", "sun");
-      }
-      lucide.createIcons();
-    }
-
-    // ESC shortcut to close preview modal
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeModal();
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) {
+        closePreview();
       }
     });
 
-    // Initial render
-    window.onload = function() {
-      renderCards();
-      lucide.createIcons();
-    };
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
+        closePreview();
+      }
+    });
+
+    // Toast and Copy Handler
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotice');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 2500);
+    }
+
+    function copyCurrentModalUrl() {
+      if (!activePreviewUrl) return;
+      navigator.clipboard.writeText(activePreviewUrl).then(() => {
+        showToast('Link copied to clipboard!');
+      }).catch(() => {
+        showToast('Failed to copy link.');
+      });
+    }
   </script>
 </body>
 </html>
